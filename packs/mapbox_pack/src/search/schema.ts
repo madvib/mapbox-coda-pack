@@ -14,10 +14,7 @@ const RouteablePointsSchema = coda.makeObjectSchema({
   properties: {
     points: {
       type: coda.ValueType.Array,
-      items: coda.makeSchema({
-        type: coda.ValueType.Array,
-        items: CoordinatesSchema,
-      }),
+      items: CoordinatesSchema,
     },
   },
 });
@@ -37,7 +34,12 @@ export var FeaturesSchema = coda.makeObjectSchema({
   displayProperty: 'place_name',
   properties: {
     ...GeoJsonFeatureSchema.properties,
-    place_type: {type: coda.ValueType.String},
+    place_type: {
+      type: coda.ValueType.Array,
+      items: coda.makeSchema({
+        type: coda.ValueType.String,
+      }),
+    },
     relevance: {type: coda.ValueType.Number},
     address: {type: coda.ValueType.String},
     properties: PlacesPropertiesSchema,
@@ -52,23 +54,18 @@ export var FeaturesSchema = coda.makeObjectSchema({
     bbox: {
       type: coda.ValueType.Array,
       items: coda.makeSchema({
-        type: coda.ValueType.Array,
-        items: {type: coda.ValueType.Number},
+        type: coda.ValueType.Number,
       }),
     },
     center: {
       type: coda.ValueType.Array,
       items: coda.makeSchema({
-        type: coda.ValueType.Array,
-        items: {type: coda.ValueType.Number},
+        type: coda.ValueType.Number,
       }),
     },
     // context: {
     //   type: coda.ValueType.Array,
-    //   items: coda.makeSchema({
-    //     type: coda.ValueType.Array,
-    //     items: FeaturesSchema,
-    //   }),
+    //   items:  FeaturesSchema,
     // },
     routable_points: RouteablePointsSchema,
   },
@@ -77,9 +74,16 @@ export var FeaturesSchema = coda.makeObjectSchema({
 export const GeocodingResponseSchema = coda.makeObjectSchema({
   properties: {
     type: {type: coda.ValueType.String},
-    query: {type: coda.ValueType.String},
+    query: {
+      type: coda.ValueType.Array,
+
+      items: coda.makeSchema({
+        type: coda.ValueType.String,
+      }),
+    },
     features: {type: coda.ValueType.Array, items: FeaturesSchema},
     attribition: {type: coda.ValueType.String},
   },
+  includeUnknownProperties: true,
   displayProperty: 'query',
 });

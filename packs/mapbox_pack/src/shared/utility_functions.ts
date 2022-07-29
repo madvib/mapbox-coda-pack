@@ -1,9 +1,19 @@
 import * as coda from '@codahq/packs-sdk';
+import {Param} from './params/param';
 
 export const coordinatePairMatcher = new RegExp(
   '^((\\-?([1-8])?\\d(\\.\\d{0,9})?)|(\\-?90(\\.0+)?))(,)((\\-?((1[0-7])|\\d)?\\d(\\.\\d{0,9})?)|(\\-?180(\\.0+)?))$',
   ''
 );
+
+export const populateParams = function (
+  inputs: any[],
+  params: Param<any>[]
+): void {
+  for (let val of inputs) {
+    params[inputs.indexOf(val)].setValue(val);
+  }
+};
 
 export const validate = function (condition: boolean, format: string) {
   if (!condition) {

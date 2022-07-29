@@ -1,15 +1,12 @@
 import * as coda from '@codahq/packs-sdk';
-import {AnyRecord} from 'dns';
 import {Param} from '../shared/params/param';
 
 export const ProfileParam = function (directions: boolean) {
-  return new Param<string, coda.Type.string>({
-    key: undefined,
-    default: 'driving',
+  return new Param<coda.ParameterType.String>({
     rules: (val) => [typeof val === 'string'],
     codaDef: coda.makeParameter({
       type: coda.ParameterType.String,
-      name: 'Profile',
+      name: 'profile',
       description: 'A Mapbox Direction routing profile ID.',
       suggestedValue: 'driving',
       autocomplete: [
@@ -22,9 +19,29 @@ export const ProfileParam = function (directions: boolean) {
   });
 };
 
-export const AlternativeRoutesParam = new Param<boolean, coda.Type.boolean>({
-  key: 'alternatives',
-  default: false,
+export const CoordinatesParam = new Param<coda.ParameterType.StringArray>({
+  rules: (coords) => [coords.length > 1, coords.length <= 25],
+  formatValue: (coords) => {
+    const parseCoords = (val: string) =>
+      parseFloat(val.split(',')[0]) >= -180 &&
+      parseFloat(val.split(',')[0]) <= 180 &&
+      parseFloat(val.split(',')[1]) >= -85.0511 &&
+      parseFloat(val.split(',')[1]) <= 85.0511;
+    //remove invalid coordinates and white space
+    coords.filter(parseCoords);
+    return coords.join(';').replace(/\s+/g, '');
+  },
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.StringArray,
+    name: 'coordinates',
+    description:
+      'Longitude, Latitude coordinate pair. Latitude must be a number between -85.0511 and 85.0511 and Longitude must be between -180 and 180.',
+    optional: true,
+  }),
+});
+
+export const AlternativeRoutesParam = new Param<coda.ParameterType.Boolean>({
+  useKey: true,
   codaDef: coda.makeParameter({
     name: 'alternatives',
     description:
@@ -35,9 +52,9 @@ export const AlternativeRoutesParam = new Param<boolean, coda.Type.boolean>({
   }),
 });
 
-export const ExcludeParam = function (profile: Param<any, any>) {
-  return new Param<string[], coda.ArrayType<coda.Type.string>>({
-    key: 'exclude',
+export const ExcludeParam = function (profile: Param<any>) {
+  return new Param<coda.ParameterType.StringArray>({
+    useKey: true,
     formatValue: (arg) => {
       const allVals = [
         'motorway',
@@ -75,9 +92,8 @@ export const ExcludeParam = function (profile: Param<any, any>) {
   });
 };
 
-export const GeometriesParam = new Param<string, coda.Type.string>({
-  key: 'geometries',
-  default: 'polyline',
+export const GeometriesParam = new Param<coda.ParameterType.String>({
+  useKey: true,
   rules: (arg) => [['geojson', 'polyline', 'polyline6'].includes(arg)],
   codaDef: coda.makeParameter({
     name: 'geometries',
@@ -89,9 +105,8 @@ export const GeometriesParam = new Param<string, coda.Type.string>({
     autocomplete: ['geojson', 'polyline', 'polyline6'],
   }),
 });
-export const OverviewParam = new Param<string, coda.Type.string>({
-  key: 'overview',
-  default: 'simplified',
+export const OverviewParam = new Param<coda.ParameterType.String>({
+  useKey: true,
   rules: (arg) => [['full', 'simplified', 'false'].includes(arg)],
   codaDef: coda.makeParameter({
     name: 'overview',
@@ -104,9 +119,7 @@ export const OverviewParam = new Param<string, coda.Type.string>({
   }),
 });
 
-export const ContourTypeParam = new Param<string, coda.Type.string>({
-  key: undefined,
-  default: 'minutes',
+export const ContourTypeParam = new Param<coda.ParameterType.String>({
   rules: (arg) => [['minutes', 'meters'].includes(arg)],
   codaDef: coda.makeParameter({
     name: 'ContourType',
@@ -118,15 +131,11 @@ export const ContourTypeParam = new Param<string, coda.Type.string>({
   }),
 });
 
-export const ContoursParam = new Param<
-  number[],
-  coda.ArrayType<coda.Type.number>
->({
-  key:
+export const ContoursParam = new Param<coda.ParameterType.NumberArray>({
+  useKey:
     ContourTypeParam.getValue() === 'minutes'
       ? 'contours_minutes'
       : 'contours_meters',
-  default: [15],
   formatValue: (val) => val.join(),
   rules: (val) => [
     val.every((p) =>
@@ -142,58 +151,54 @@ export const ContoursParam = new Param<
     type: coda.ParameterType.NumberArray,
     suggestedValue: [15],
     optional: true,
-    name: 'Contours',
+    name: 'contours',
     description:
-      'Define up to four contours either as 1) times in minutes or 2) distances in meters, to use for each isochrone contour. Contours must be in increasing order. The maximum time that can be specified is 60 minutes.The maximum distance that can be specified is 100000 meters (100km).',
+      'List defining up to four contours either as 1) times in minutes or 2) distances in meters, to use for each isochrone contour. Contours must be in increasing order. The maximum time that can be specified is 60 minutes.The maximum distance that can be specified is 100000 meters (100km).',
   }),
 });
 
-export const ContoursColorsParam = new Param<
-  string[],
-  coda.ArrayType<coda.Type.string>
->({
-  key: 'contours_colors',
+export const ContoursColorsParam = new Param<coda.ParameterType.StringArray>({
+  useKey: true,
   rules: (val) => [val.every((p) => typeof p === 'string' && p.length === 6)],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.StringArray,
-    name: 'ContoursColors',
+    name: 'contours_colors',
     optional: true,
     description:
       'The colors to use for each isochrone contour, specified as hex values without a leading # (for example, ff0000 for red). If this parameter is used, there must be the same number of colors as there are entries in contours_minutes or contours_meters. If no colors are specified, the Isochrone API will assign a default rainbow color scheme to the output.',
   }),
 });
-export const PolygonsParam = new Param<boolean, coda.Type.boolean>({
-  key: 'polygons',
-  default: true,
+export const PolygonsParam = new Param<coda.ParameterType.Boolean>({
+  useKey: true,
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
-    name: 'Polgons',
+    name: 'polygons',
     optional: true,
     suggestedValue: true,
     description:
       'Specify whether to return the contours as GeoJSON polygons (true) or linestrings (false, default). When polygons=true, any contour that forms a ring is returned as a polygon.',
   }),
 });
-export const DenoiseParam = new Param<number, coda.Type.number>({
-  key: 'denoise',
-  default: 1,
+export const DenoiseParam = new Param<coda.ParameterType.Number>({
+  useKey: true,
   formatValue: (val) => val.toFixed(1),
   rules: (val) => [typeof val === 'number', val >= 0, val <= 1],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Number,
-    name: 'Denoise',
-    optional: true,
+    name: 'denoise',
     description:
       'A floating point value from 0.0 to 1.0 that can be used to remove smaller contours. The default is 1.0. A value of 1.0 will only return the largest contour for a given value. A value of 0.5 drops any contours that are less than half the area of the largest contour in the set of contours for that same value.',
+    optional: true,
+    suggestedValue: 1,
   }),
 });
-export const GeneralizeParam = new Param<number, coda.Type.number>({
-  key: 'generalize',
+export const GeneralizeParam = new Param<coda.ParameterType.Number>({
+  useKey: true,
   formatValue: (val) => Math.trunc(val),
   rules: (val) => [typeof val === 'number', val >= 0],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Number,
-    name: 'Generalize',
+    name: 'generalize',
     optional: true,
     description:
       'A positive floating point value, in meters, used as the tolerance for Douglas-Peucker generalization. There is no upper bound. If no value is specified in the request, the Isochrone API will choose the most optimized generalization to use for the request. Note that the generalization of contours can lead to self-intersections, as well as intersections of adjacent contours.',

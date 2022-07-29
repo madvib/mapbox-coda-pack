@@ -12,8 +12,8 @@ export class MapBoxClient {
       headers?: {[header: string]: string};
       token?: string;
       pathParams?: string;
-      queryParams?: Param<any, any>[];
-      body?: {[key: string]: any} | Param<any, any>[];
+      queryParams?: Param<any>[];
+      body?: {[key: string]: any} | Param<any>[];
       appendUsername?: boolean;
     }
   ) {
@@ -23,13 +23,14 @@ export class MapBoxClient {
 
     if (args.body && Array.isArray(args.body)) {
       for (let p of args.body) {
-        if (p.key && p.include()) this.bodyParams[p.key] = p.getValue();
+        if (p.key && p.meetsConditions()) this.bodyParams[p.key] = p.getValue();
       }
     } else this.bodyParams = args.body;
 
     if (args.queryParams)
       for (let p of args.queryParams) {
-        if (p.key && p.include()) this.queryParams[p.key] = p.getValue();
+        if (p.key && p.meetsConditions())
+          this.queryParams[p.key] = p.getValue();
       }
   }
 
@@ -62,15 +63,20 @@ export class MapBoxClient {
     let response = await this.fetch('POST', cacheTtlSecs, this.body());
     return response.body;
   }
+  async put(cacheTtlSecs?: number): Promise<any> {
+    let response = await this.fetch('PUT', cacheTtlSecs, this.body());
+    return response.body;
+  }
   async delete(cacheTtlSecs?: number): Promise<any> {
     let response = await this.fetch('DELETE', cacheTtlSecs);
     return response.body;
   }
   private async fetch(
-    method: 'GET' | 'POST' | 'DELETE',
+    method: 'GET' | 'POST' | 'DELETE' | 'PUT',
     cacheTtlSecs?: number,
     body?: string | Buffer
   ): Promise<any> {
+    console.log(this.url());
     let response: Promise<coda.FetchResponse<any>>;
     try {
       response = this.args.context.fetcher.fetch({

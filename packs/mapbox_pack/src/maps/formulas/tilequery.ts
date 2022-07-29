@@ -1,8 +1,10 @@
 import * as coda from '@codahq/packs-sdk';
 import {MapBoxClient} from '../../shared/client';
 import {LatParam, LonParam, Param} from '../../shared/params/param';
-import {GeoJsonFeatureCollectionSchema} from '../../shared/schema';
-import {coordinatePairMatcher} from '../../shared/utility_functions';
+import {
+  coordinatePairMatcher,
+  populateParams,
+} from '../../shared/utility_functions';
 import {
   DedupeParam,
   GeometryTypeParam,
@@ -12,8 +14,9 @@ import {
   SearchParam,
   TilesetParam,
 } from '../parameters';
+import {TilequeryResultSchema} from '../schema';
 
-const tilequeryParams: Param<any, any>[] = [
+const tilequeryParams: Param<any>[] = [
   TilesetParam,
   SearchParam,
   LatParam,
@@ -27,20 +30,28 @@ const tilequeryParams: Param<any, any>[] = [
 
 export const tilequery = coda.makeFormula({
   resultType: coda.ValueType.Object,
-  schema: GeoJsonFeatureCollectionSchema,
+  schema: TilequeryResultSchema,
   name: 'Tilequery',
   description:
-    'The Tilequery API returns the location and properties of the features within the query radius.',
-  // TODO  examples:
+    'Return the location and properties of the features within the query radius.',
+  examples: [
+    {params: ['central park'], result: '{FeatureCollection}'},
+    {
+      params: [
+        'statue of liberty',
+        'autocomplete:true',
+        'country: ["US"]',
+        'limit:5',
+        'proximity: ip',
+      ],
+      result: '{FeatureCollection}',
+    },
+  ],
   parameters: tilequeryParams.map((p) => p.codaDef) as coda.ParamDefs,
   execute: async function (params, context) {
-    for (let p of params) {
-      tilequeryParams[params.indexOf(p)].setValue(p);
-    }
+    populateParams(params, tilequeryParams);
 
     let useSearch = coordinatePairMatcher.test(SearchParam.getValue());
-    console.log(useSearch);
-    console.log(SearchParam.getValue());
 
     if (useSearch) {
       let coords = SearchParam.getValue().split(',');

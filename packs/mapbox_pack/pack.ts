@@ -1,13 +1,13 @@
 import * as coda from '@codahq/packs-sdk';
 import {generateToken} from './src/account/temporaryToken';
+import {datasetSyncTable} from './src/maps/formulas/data';
+import {htmlEmbed} from './src/maps/formulas/embed_html';
 import {
   addFeature,
-  datasetSyncTable,
   deleteFeature,
   featuresDynamicSyncTable,
-} from './src/maps/formulas/data';
-import {htmlEmbed} from './src/maps/formulas/embed_html';
-import {staticImage} from './src/maps/formulas/static_images';
+} from './src/maps/formulas/features';
+import {staticImage} from './src/maps/formulas/static_image';
 import {stylesSyncTable} from './src/maps/formulas/styles';
 import {tilequery} from './src/maps/formulas/tilequery';
 import {tilesetSyncTable} from './src/maps/formulas/tilesets';
@@ -16,6 +16,7 @@ import isochrone from './src/navigation/formulas/isochrone';
 import geocode from './src/search/formulas/geocode';
 import {getOptions} from './src/shared/params/getOptionsFormula';
 
+export const liveTest: boolean = false;
 export const pack = coda.newPack();
 
 pack.syncTables.push(
@@ -44,7 +45,8 @@ pack.setUserAuthentication({
   params: [
     {
       name: 'access_token',
-      description: 'Access token, recommended scopes: ...[]',
+      description:
+        'Mapbox access token, recommended to create a specific token for Coda with the following scopes: Styles: [read, write, list], Datasets: [read, list, write], Tokens: [read, write]',
     },
     {
       name: 'username',

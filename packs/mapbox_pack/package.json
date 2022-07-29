@@ -4,13 +4,13 @@
   "description": "A coda pack for using the mapbox api in your docs",
   "main": "pack.ts",
   "scripts": {
-    "test": "mocha --require ts-node/register ./test/*.spec.ts",
+    "test": "mocha --require ts-node/register ./test/**/*.spec.ts",
     "postinstall": "npx patch-package"
   },
   "author": "Micah Cotton",
   "license": "ISC",
   "dependencies": {
-    "@codahq/packs-sdk": "^1.0.1",
+    "@codahq/packs-sdk": "^1.0.2",
     "@mapbox/mapbox-sdk": "^0.13.3",
     "dayjs": "^1.11.3",
     "jwt-decode": "^3.1.2"

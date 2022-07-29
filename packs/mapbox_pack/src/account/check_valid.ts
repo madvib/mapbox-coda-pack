@@ -1,7 +1,6 @@
 import * as coda from '@codahq/packs-sdk';
 import {MapBoxClient} from '../shared/client';
 
-// pass as parameter rule?
 export default async function checkValidAndPublic(
   context: coda.ExecutionContext,
   token: string

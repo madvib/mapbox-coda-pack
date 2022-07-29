@@ -1,9 +1,9 @@
 import * as coda from '@codahq/packs-sdk';
-import {format} from 'path';
 import checkValidAndPublic from '../../account/check_valid';
 import getDefaultToken from '../../account/defaultToken';
-import {baseUrl, MapBoxClient} from '../../shared/client';
+import {baseUrl} from '../../shared/client';
 import {LatParam, LonParam, Param} from '../../shared/params/param';
+import {populateParams} from '../../shared/utility_functions';
 import {
   // AddLayerParam,
   AttributionParam,
@@ -17,7 +17,7 @@ import {
   OverlayParam,
   PaddingParam,
   PitchParam,
-  SetFilterParam,
+  // SetFilterParam,
   StyleParam,
   TwoXParam,
   WidthParam,
@@ -25,7 +25,7 @@ import {
   TokenParam,
 } from '../parameters';
 
-const staticImgParams: Param<any, any>[] = [
+const staticImgParams: Param<any>[] = [
   PositionParam,
   TokenParam,
   StyleParam,
@@ -42,7 +42,7 @@ const staticImgParams: Param<any, any>[] = [
   MapBboxParam,
   OverlayParam,
   BeforeLayerParam,
-  SetFilterParam,
+  // SetFilterParam,
   LayerIdParam,
   PaddingParam,
 ];
@@ -53,26 +53,28 @@ export const staticImage = coda.makeFormula({
   name: 'StaticImage',
   description:
     'Retrieve a static image that looks like an embedded map but does not have interactivity or controls',
-  // TODO  examples:
+  examples: [
+    {
+      params: [],
+      result:
+        '"https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/geojson({"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-122.4285,37.763658]}}]})/-122.3486,37.8169,9,0/300x200?access_token=YOUR_PUBLIC_TOKEN"',
+    },
+  ],
   parameters: staticImgParams.map((p) => p.codaDef) as coda.ParamDefs,
   execute: async function (params, context) {
-    for (let p of params) {
-      staticImgParams[params.indexOf(p)].setValue(p);
-    }
+    populateParams(params, staticImgParams);
+
     let token =
-      TokenParam.include() &&
+      TokenParam.meetsConditions() &&
       checkValidAndPublic(context, TokenParam.getValue())
         ? TokenParam.getValue()
         : await getDefaultToken(context);
 
     function getOverlays() {
       let overlays: string = '';
-      console.log(OverlayParam.include());
-      if (OverlayParam.include()) {
-        console.log(OverlayParam.getValue());
+      if (OverlayParam.meetsConditions()) {
         let formattedGeoJson = OverlayParam.getValue().map((p) => {
-          console.log(p);
-          return `geojson(${encodeURIComponent(p)})`;
+          return `geojson(${encodeURIComponent(p.replace(/[\s\n\r]+/g, ''))})`;
         });
 
         overlays = formattedGeoJson.join();
@@ -85,14 +87,13 @@ export const staticImage = coda.makeFormula({
 
     function getPosition() {
       let position: string;
-      console.log(PositionParam.getValue());
       switch (PositionParam.getValue()) {
         case 'auto':
           position = 'auto';
           PaddingParam.setValue(undefined);
           break;
         case 'bounding box':
-          position = MapBboxParam.include()
+          position = MapBboxParam.meetsConditions()
             ? `[${MapBboxParam.getValue()}]`
             : '';
           PaddingParam.setValue(undefined);
@@ -109,7 +110,7 @@ export const staticImage = coda.makeFormula({
     } = {};
 
     for (var p of staticImgParams) {
-      if (p.key && p.include()) queryParams[p.key] = p.getValue();
+      if (p.key && p.meetsConditions()) queryParams[p.key] = p.getValue();
     }
     let url = coda.withQueryParams(
       baseUrl +
@@ -117,7 +118,6 @@ export const staticImage = coda.makeFormula({
         `${StyleParam.getValue()}/static/${getOverlays()}${getPosition()}/${WidthParam.getValue()}x${HeightParam.getValue()}${TwoXParam.getValue()}`,
       {...queryParams, access_token: token}
     );
-    console.log(url);
     return url;
   },
 });

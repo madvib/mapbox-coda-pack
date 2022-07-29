@@ -8,8 +8,7 @@ export const StepManeuverSchema = coda.makeObjectSchema({
     location: {
       type: coda.ValueType.Array,
       items: coda.makeSchema({
-        type: coda.ValueType.Array,
-        items: {type: coda.ValueType.Number},
+        type: coda.ValueType.Number,
       }),
     },
     modifier: {type: coda.ValueType.String},
@@ -31,7 +30,7 @@ export const RouteStepSchema = coda.makeObjectSchema({
       description: 'The distance traveled through the waypoints, in meters.',
     },
     weight: {
-      type: coda.ValueType.String,
+      type: coda.ValueType.Number,
       description: 'The weight in units described by weight_name.',
     },
     geometry: {
@@ -57,7 +56,7 @@ export const RouteLegSchema = coda.makeObjectSchema({
       description: 'The distance traveled through the waypoints, in meters.',
     },
     weight: {
-      type: coda.ValueType.String,
+      type: coda.ValueType.Number,
       description: 'The weight in units described by weight_name.',
     },
     steps: {type: coda.ValueType.Array, items: RouteStepSchema},
@@ -66,6 +65,7 @@ export const RouteLegSchema = coda.makeObjectSchema({
       description: 'A summary of the route.',
     },
   },
+  displayProperty: 'summary',
 });
 
 export const RouteSchema = coda.makeObjectSchema({
@@ -85,7 +85,7 @@ export const RouteSchema = coda.makeObjectSchema({
         'The weight used. The default is routability, which is duration-based, with additional penalties for less desirable maneuvers.',
     },
     weight: {
-      type: coda.ValueType.String,
+      type: coda.ValueType.Number,
       description: 'The weight in units described by weight_name.',
     },
     duration_typical: {
@@ -101,6 +101,7 @@ export const RouteSchema = coda.makeObjectSchema({
     },
     legs: {type: coda.ValueType.Array, items: RouteLegSchema},
   },
+  displayProperty: 'legs',
 });
 
 export const WaypointSchema = coda.makeObjectSchema({
@@ -109,8 +110,7 @@ export const WaypointSchema = coda.makeObjectSchema({
     location: {
       type: coda.ValueType.Array,
       items: coda.makeSchema({
-        type: coda.ValueType.Array,
-        items: {type: coda.ValueType.Number},
+        type: coda.ValueType.Number,
       }),
     },
     distance: {type: coda.ValueType.Number},
@@ -124,5 +124,5 @@ export const DirectionsResponseSchema = coda.makeObjectSchema({
     waypoints: {type: coda.ValueType.Array, items: WaypointSchema},
     routes: {type: coda.ValueType.Array, items: RouteSchema},
   },
-  displayProperty: 'routes',
+  displayProperty: 'waypoints',
 });

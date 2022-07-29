@@ -1,5 +1,5 @@
 import * as coda from '@codahq/packs-sdk';
-import {GeoJsonFeatureSchema} from '../shared/schema';
+import {GeoJsonFeatureSchema, GeometrySchema} from '../shared/schema';
 
 export const DatasetSchema = coda.makeObjectSchema({
   displayProperty: 'name',
@@ -27,10 +27,8 @@ export const DatasetSchema = coda.makeObjectSchema({
       type: coda.ValueType.Array,
       description:
         'The extent of features in the dataset in the format [west, south, east, north].',
-
       items: coda.makeSchema({
-        type: coda.ValueType.Array,
-        items: {type: coda.ValueType.Number},
+        type: coda.ValueType.Number,
       }),
     },
     features: {
@@ -76,7 +74,7 @@ export const TilesetSchema = coda.makeObjectSchema({
       type: coda.ValueType.Array,
       description:
         'The longitude, latitude, and zoom level for the center of the contained data, given in the format [lon, lat, zoom].',
-      items: {type: coda.ValueType.String},
+      items: {type: coda.ValueType.Number},
     },
     created: {
       type: coda.ValueType.String,
@@ -120,26 +118,33 @@ export const TilesetSchema = coda.makeObjectSchema({
 export const TilequeryPropertiesSchema = coda.makeObjectSchema({
   displayProperty: 'distance',
   properties: {
-    distance: {type: coda.ValueType.String},
+    distance: {type: coda.ValueType.Number},
     geometry: {type: coda.ValueType.String},
     layer: {type: coda.ValueType.String},
   },
 });
 
-export const TilequeryFeatureSchema = coda.makeObjectSchema({
-  displayProperty: 'properties.tilequery.distance',
+export const PropsSchema = coda.makeObjectSchema({
+  displayProperty: 'tilequery',
   properties: {
-    ...GeoJsonFeatureSchema.properties,
-    properties: {
-      ...GeoJsonFeatureSchema.properties.properties,
-      tilequery: TilequeryPropertiesSchema.properties,
-    },
+    tilequery: TilequeryPropertiesSchema,
+  },
+});
+
+export const TilequeryFeatureSchema = coda.makeObjectSchema({
+  displayProperty: 'type',
+  idProperty: 'id',
+  properties: {
+    geometry: GeometrySchema,
+    type: {type: coda.ValueType.String},
+    id: {type: coda.ValueType.Number},
+    properties: PropsSchema,
   },
 });
 export const TilequeryResultSchema = coda.makeObjectSchema({
   displayProperty: 'type',
   properties: {
     type: {type: coda.ValueType.String},
-    features: TilequeryFeatureSchema,
+    features: {type: coda.ValueType.Array, items: TilequeryFeatureSchema},
   },
 });

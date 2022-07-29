@@ -6,8 +6,7 @@ export const GeometrySchema = coda.makeObjectSchema({
     coordinates: {
       type: coda.ValueType.Array,
       items: coda.makeSchema({
-        type: coda.ValueType.Array,
-        items: {type: coda.ValueType.Number},
+        type: coda.ValueType.Number,
       }),
     },
     interpolated: {type: coda.ValueType.Boolean},
@@ -22,7 +21,7 @@ export const GeoJsonFeatureSchema = coda.makeObjectSchema({
     geometry: GeometrySchema,
     id: {type: coda.ValueType.String},
     type: {type: coda.ValueType.String},
-    properties: {type: coda.ValueType.String},
+    // properties: {type: coda.ValueType.String},
   },
 });
 

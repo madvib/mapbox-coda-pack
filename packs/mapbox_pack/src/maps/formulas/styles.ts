@@ -5,11 +5,11 @@ import {ListStylesSchema} from '../schema';
 
 export const stylesSyncTable = coda.makeSyncTable({
   schema: ListStylesSchema,
-  name: 'CustomStyles',
+  name: 'Styles',
   identityName: 'Style',
-  description: '',
+  description: 'List styles associated with your Mapbox account',
   formula: {
-    name: 'FetchCustomStyles',
+    name: 'FetchStyles',
     description: '',
     parameters: [],
     execute: async (_, context) => {

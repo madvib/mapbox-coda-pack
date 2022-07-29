@@ -1,6 +1,11 @@
 import * as coda from '@codahq/packs-sdk';
 import {GeocodingResponseSchema} from '../schema';
 import {
+  coordinatePairMatcher,
+  populateParams,
+} from '../../shared/utility_functions';
+import {MapBoxClient} from '../../shared/client';
+import {
   SearchTextParam,
   AutocompleteParam,
   BboxGeoParam,
@@ -15,10 +20,8 @@ import {
   ReverseModeParam,
   GeoParam,
 } from '../parameters';
-import {coordinatePairMatcher} from '../../shared/utility_functions';
-import {MapBoxClient} from '../../shared/client';
 
-const geocodeParams: GeoParam<any, any>[] = [
+const geocodeParams: GeoParam<any>[] = [
   SearchTextParam,
   AutocompleteParam,
   BboxGeoParam,
@@ -39,17 +42,25 @@ export default coda.makeFormula({
   name: 'Search',
   description:
     'Forward or reverse geocode entering either a search query or longitude,latitude pair',
-  // TODO  examples:
+  examples: [
+    {params: ['central park'], result: '{FeatureCollection}'},
+    {
+      params: [
+        'statue of liberty',
+        'autocomplete:true',
+        'country: ["US"]',
+        'limit:5',
+        'proximity: ip',
+      ],
+      result: '{FeatureCollection}',
+    },
+  ],
   parameters: geocodeParams.map((p) => p.codaDef) as coda.ParamDefs,
   execute: geocode,
 });
 
 export async function geocode(params: any[], context: coda.ExecutionContext) {
-  console.log(params);
-  // populate values in Param objects
-  for (let p of params) {
-    geocodeParams[params.indexOf(p)].setValue(p);
-  }
+  populateParams(params, geocodeParams);
 
   let coordinateQuery = coordinatePairMatcher.test(SearchTextParam.getValue());
 
@@ -69,7 +80,6 @@ export async function autocompleteGeocode(
   context: coda.ExecutionContext,
   search: string
 ) {
-  console.log(search);
   let results = await geocode(
     [search, true, undefined, undefined, undefined, undefined, undefined, 'ip'],
     context

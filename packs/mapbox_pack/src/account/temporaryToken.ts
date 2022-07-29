@@ -2,13 +2,13 @@ import * as coda from '@codahq/packs-sdk';
 import dayjs = require('dayjs');
 import {MapBoxClient} from '../shared/client';
 import {Param} from '../shared/params/param';
+import {populateParams} from '../shared/utility_functions';
 
-const ExpiresParam = new Param<number, coda.Type.number>({
-  key: 'expires',
+const ExpiresParam = new Param<coda.ParameterType.Number>({
+  useKey: true,
   rules: (minutes) => [minutes > 0, minutes <= 60],
   formatValue: (val) =>
     dayjs(new Date()).add(val, 'minute').toDate().toISOString(),
-  default: 60,
   codaDef: coda.makeParameter({
     name: 'expires',
     description:
@@ -18,8 +18,8 @@ const ExpiresParam = new Param<number, coda.Type.number>({
     suggestedValue: 60,
   }),
 });
-const ScopesParam = new Param<string[], coda.ArrayType<coda.Type.string>>({
-  key: 'scopes',
+const ScopesParam = new Param<coda.ParameterType.StringArray>({
+  useKey: true,
   rules: (scopes) => [
     scopes.every((s) =>
       [
@@ -31,7 +31,6 @@ const ScopesParam = new Param<string[], coda.ArrayType<coda.Type.string>>({
       ].includes(s)
     ),
   ],
-  default: ['styles:read'],
   codaDef: coda.makeParameter({
     optional: true,
     type: coda.ParameterType.StringArray,
@@ -48,7 +47,7 @@ export const generateToken = coda.makeFormula({
   name: 'GenerateToken',
   resultType: coda.ValueType.String,
   description:
-    'Create a temporary token, useful in other formulas with a client-exposed token such as HTML Embed.  Requires Connected Account token to have { tokens:read } and { tokens:write } scopes',
+    'Create a temporary token, useful in other formulas with a client-exposed token such as HTML Embed. Secret access token must have [tokens: read, write] scopes enabled',
   cacheTtlSecs: 0,
   examples: [
     {
@@ -64,9 +63,7 @@ export const generateToken = coda.makeFormula({
   ],
   parameters: GenTokenParams.map((p) => p.codaDef) as coda.ParamDefs,
   execute: async function (params, context) {
-    for (let p of params) {
-      GenTokenParams[params.indexOf(p)].setValue(p);
-    }
+    populateParams(params, GenTokenParams);
 
     let client = new MapBoxClient({
       context,
@@ -78,7 +75,6 @@ export const generateToken = coda.makeFormula({
 
     let response = await client.post(0);
 
-    console.log(response);
     let token = response.token;
 
     return token;

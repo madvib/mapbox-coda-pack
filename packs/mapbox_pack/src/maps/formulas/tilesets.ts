@@ -7,7 +7,8 @@ export const tilesetSyncTable = coda.makeSyncTable({
   schema: TilesetSchema,
   name: 'Tilesets',
   identityName: 'Tileset',
-  description: '',
+  description:
+    'List all tilesets belonging to your Mapbox account, requires token with tilesets:list scope',
   formula: {
     name: 'FetchTilesets',
     description: '',

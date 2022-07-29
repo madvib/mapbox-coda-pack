@@ -3,20 +3,19 @@ import {UnionType} from '@codahq/packs-sdk/dist/api_types';
 import {MapboxPlaceTypes} from '../shared/params/constants';
 import {BboxParamOptions, Param, ParamOptions} from '../shared/params/param';
 import {coordinatePairMatcher} from '../shared/utility_functions';
-import {autocompleteGeocode} from './formulas/geocode';
 
 const WorldViews = ['cn', 'in', 'jp', 'us'];
 
-type GeoParamOptions<T, C extends UnionType> = ParamOptions<T, C> & {
+type GeoParamOptions<C extends coda.ParameterType> = ParamOptions<C> & {
   forwardGeocode?: boolean;
   reverseGeocode?: boolean;
 };
 
-export class GeoParam<T, C extends UnionType> extends Param<T, C> {
+export class GeoParam<C extends coda.ParameterType> extends Param<C> {
   forwardGeocode: boolean = true;
   reverseGeocode: boolean = true;
 
-  constructor(options: GeoParamOptions<T, C>) {
+  constructor(options: GeoParamOptions<C>) {
     super(options);
     if (typeof options.forwardGeocode === 'boolean')
       this.forwardGeocode = options.forwardGeocode;
@@ -25,8 +24,7 @@ export class GeoParam<T, C extends UnionType> extends Param<T, C> {
   }
 }
 
-export const SearchTextParam = new GeoParam<string, coda.Type.string>({
-  key: null,
+export const SearchTextParam = new GeoParam<coda.ParameterType.String>({
   rules: (text) => [typeof text === 'string'],
   formatValue: (arg: string) => arg.substring(0, 256),
   codaDef: coda.makeParameter({
@@ -34,12 +32,10 @@ export const SearchTextParam = new GeoParam<string, coda.Type.string>({
     name: 'query',
     description:
       'The feature you’re trying to look up. This could be an address, a point of interest name, a city name, etc. ',
-    autocomplete: autocompleteGeocode,
   }),
 });
 
-export const AutocompleteParam = new GeoParam<boolean, coda.Type.boolean>({
-  key: 'autocomplete',
+export const AutocompleteParam = new GeoParam<coda.ParameterType.Boolean>({
   reverseGeocode: false,
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
@@ -51,19 +47,12 @@ export const AutocompleteParam = new GeoParam<boolean, coda.Type.boolean>({
   }),
 });
 
-export const BboxGeoParam = new GeoParam<
-  number[],
-  coda.ArrayType<coda.Type.number>
->({
+export const BboxGeoParam = new GeoParam<coda.ParameterType.NumberArray>({
   ...BboxParamOptions,
   reverseGeocode: false,
 });
 
-export const CountryParam = new GeoParam<
-  string[],
-  coda.ArrayType<coda.Type.string>
->({
-  key: 'country',
+export const CountryParam = new GeoParam<coda.ParameterType.StringArray>({
   formatValue: (arg) => arg.join(),
   rules: (value) => [
     Array.isArray(value) && value.every((e) => typeof e === 'string'),
@@ -72,13 +61,12 @@ export const CountryParam = new GeoParam<
     type: coda.ParameterType.StringArray,
     name: 'country',
     description:
-      'Limit results to one or more countries. Permitted values are ISO 3166 alpha 2 country codes separated by commas.',
+      'Limit results to one or more countries. GetOptions formula with the "country_codes" argument returns permitted values',
     optional: true,
   }),
 });
 
-export const FuzzyMatchParam = new GeoParam<boolean, coda.Type.boolean>({
-  key: 'fuzzyMatch',
+export const FuzzyMatchParam = new GeoParam<coda.ParameterType.Boolean>({
   reverseGeocode: false,
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
@@ -89,11 +77,7 @@ export const FuzzyMatchParam = new GeoParam<boolean, coda.Type.boolean>({
     suggestedValue: true,
   }),
 });
-export const LanguageParam = new GeoParam<
-  string[],
-  coda.ArrayType<coda.Type.string>
->({
-  key: 'language',
+export const LanguageParam = new GeoParam<coda.ParameterType.StringArray>({
   formatValue: (arg) => arg.join(),
   rules: (val) => [
     Array.isArray(val) && val.every((e) => typeof e === 'string'),
@@ -108,8 +92,7 @@ export const LanguageParam = new GeoParam<
 });
 
 const limitOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-export const LimitParam = new GeoParam<number, coda.Type.number>({
-  key: 'limit',
+export const LimitParam = new GeoParam<coda.ParameterType.Number>({
   formatValue: (arg) => Math.trunc(arg),
   rules: (val) => [
     typeof val === 'number',
@@ -126,8 +109,7 @@ export const LimitParam = new GeoParam<number, coda.Type.number>({
   }),
 });
 
-export const ProximityParam = new GeoParam<string, coda.Type.string>({
-  key: 'proximity',
+export const ProximityParam = new GeoParam<coda.ParameterType.String>({
   reverseGeocode: false,
   rules: (val) => [
     typeof val === 'string',
@@ -143,8 +125,7 @@ export const ProximityParam = new GeoParam<string, coda.Type.string>({
   }),
 });
 
-export const RoutingParam = new GeoParam<boolean, coda.Type.boolean>({
-  key: 'routing',
+export const RoutingParam = new GeoParam<coda.ParameterType.Boolean>({
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
     name: 'routing',
@@ -155,11 +136,7 @@ export const RoutingParam = new GeoParam<boolean, coda.Type.boolean>({
   }),
 });
 
-export const TypesParam = new GeoParam<
-  string[],
-  coda.ArrayType<coda.Type.string>
->({
-  key: 'types',
+export const TypesParam = new GeoParam<coda.ParameterType.StringArray>({
   formatValue: (arg) => arg.join(),
   rules: (val) => [
     Array.isArray(val),
@@ -174,8 +151,7 @@ export const TypesParam = new GeoParam<
   }),
 });
 
-export const WorldviewParam = new GeoParam<string, coda.Type.string>({
-  key: 'worldview',
+export const WorldviewParam = new GeoParam<coda.ParameterType.String>({
   rules: (text) => [typeof text === 'string'],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.String,
@@ -188,9 +164,8 @@ export const WorldviewParam = new GeoParam<string, coda.Type.string>({
   }),
 });
 
-export const ReverseModeParam = new GeoParam<string, coda.Type.string>({
+export const ReverseModeParam = new GeoParam<coda.ParameterType.String>({
   forwardGeocode: false,
-  key: 'reverseMode',
   rules: (val) => [
     typeof val === 'string',
     ['distance', 'score'].includes(val),

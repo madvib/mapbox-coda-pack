@@ -5,9 +5,10 @@ import {
   autocompleteLayersForStyle,
   autocompleteStyles,
 } from './formulas/styles';
+import {autocompleteTilesets} from './formulas/tilesets';
 
-export const PositionParam = new Param<string, coda.Type.string>({
-  key: undefined,
+export const PositionParam = new Param<coda.ParameterType.String>({
+  useKey: undefined,
   rules: (text) => [
     typeof text === 'string',
     text === 'auto' || text === 'center' || text === 'bounding box',
@@ -17,12 +18,11 @@ export const PositionParam = new Param<string, coda.Type.string>({
     type: coda.ParameterType.String,
     name: 'position',
     description:
-      ' Choose one of three methods to position the camera for static image. "center": Determine position by passing coordinates, zoom, and optionally Pitch/Bearing, "bounding box": Set 4 coordinates to frame the image, "auto": Determines position automatically based on overlays or default center coordinates',
+      'Choose one of three methods to position the camera for static image. "center": Determine position by passing coordinates, zoom, and optionally Pitch/Bearing, "bounding box": Set 4 coordinates to frame the image, "auto": Determines position automatically based on overlays or default center coordinates',
     autocomplete: ['center', 'auto', 'bounding box'],
   }),
 });
-export const SearchParam = new Param<string, coda.Type.string>({
-  key: undefined,
+export const SearchParam = new Param<coda.ParameterType.String>({
   codaDef: coda.makeParameter({
     type: coda.ParameterType.String,
     name: 'search',
@@ -33,8 +33,7 @@ export const SearchParam = new Param<string, coda.Type.string>({
   }),
 });
 
-export const TokenParam = new Param<string, coda.Type.string>({
-  key: undefined,
+export const TokenParam = new Param<coda.ParameterType.String>({
   rules: (text) => [typeof text === 'string'],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.String,
@@ -45,10 +44,8 @@ export const TokenParam = new Param<string, coda.Type.string>({
   }),
 });
 
-export const StyleParam = new Param<string, coda.Type.string>({
-  key: undefined,
+export const StyleParam = new Param<coda.ParameterType.String>({
   rules: (text) => [typeof text === 'string'],
-  default: 'mapbox/streets-v11',
   codaDef: coda.makeParameter({
     type: coda.ParameterType.String,
     name: 'style',
@@ -59,26 +56,20 @@ export const StyleParam = new Param<string, coda.Type.string>({
   }),
 });
 
-export const TilesetParam = new Param<string, coda.Type.string>({
-  key: undefined,
+export const TilesetParam = new Param<coda.ParameterType.String>({
   rules: (text) => [typeof text === 'string'],
-  default: 'mapbox.mapbox-streets-v8',
   codaDef: coda.makeParameter({
     type: coda.ParameterType.String,
     name: 'tileset',
     description:
       'The ID of the map being queried. To query multiple tilesets at the same time, use a comma-separated list of up to 15 tileset IDs.',
     suggestedValue: 'mapbox.mapbox-streets-v8',
-    // autocomplete: autocompleteStyles,
+    autocomplete: autocompleteTilesets,
     optional: true,
   }),
 });
 
-export const OverlayParam = new Param<
-  string[],
-  coda.ArrayType<coda.Type.string>
->({
-  key: undefined,
+export const OverlayParam = new Param<coda.ParameterType.StringArray>({
   rules: (val) => [Array.isArray(val)],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.StringArray,
@@ -89,9 +80,7 @@ export const OverlayParam = new Param<
   }),
 });
 
-export const ZoomParam = new Param<number, coda.Type.number>({
-  key: undefined,
-  default: 0,
+export const ZoomParam = new Param<coda.ParameterType.Number>({
   rules: (val) => [typeof val === 'number' && val >= 0 && val <= 22],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Number,
@@ -99,45 +88,39 @@ export const ZoomParam = new Param<number, coda.Type.number>({
     description:
       'Zoom level; a number between 0 and 22. Fractional zoom levels will be rounded to two decimal places.',
     optional: true,
+    suggestedValue: 10,
   }),
 });
 
-export const MapBboxParam = new Param<
-  number[],
-  coda.ArrayType<coda.Type.number>
->({
+export const MapBboxParam = new Param<coda.ParameterType.NumberArray>({
   //TODO better description?
   ...BboxParamOptions,
-  key: undefined,
+  useKey: false,
 });
 
-export const WidthParam = new Param<number, coda.Type.number>({
-  key: undefined,
-  default: 300,
+export const WidthParam = new Param<coda.ParameterType.Number>({
   rules: (val) => [typeof val === 'number' && val >= 1 && val <= 1280],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Number,
     name: 'width',
     description: 'Width of the image; a number between 1 and 1280 pixels.',
     optional: true,
+    suggestedValue: 300,
   }),
 });
 
-export const HeightParam = new Param<number, coda.Type.number>({
-  key: undefined,
-  default: 200,
+export const HeightParam = new Param<coda.ParameterType.Number>({
   rules: (val) => [typeof val === 'number' && val >= 1 && val <= 1280],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Number,
     name: 'height',
     description: 'Height of the image; a number between 1 and 1280 pixels.',
     optional: true,
+    suggestedValue: 200,
   }),
 });
 
-export const BearingParam = new Param<number, coda.Type.number>({
-  key: undefined,
-  default: 0,
+export const BearingParam = new Param<coda.ParameterType.Number>({
   rules: (val) => [typeof val === 'number' && val >= 0 && val <= 360],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Number,
@@ -145,12 +128,11 @@ export const BearingParam = new Param<number, coda.Type.number>({
     description:
       'Bearing rotates the map around its center. A number between 0 and 360, interpreted as decimal degrees. 90 rotates the map 90° clockwise, while 180 flips the map. Defaults to 0.',
     optional: true,
+    suggestedValue: 0,
   }),
 });
 
-export const PitchParam = new Param<number, coda.Type.number>({
-  key: undefined,
-  default: 0,
+export const PitchParam = new Param<coda.ParameterType.Number>({
   rules: (val) => [typeof val === 'number' && val >= 0 && val <= 60],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Number,
@@ -158,48 +140,49 @@ export const PitchParam = new Param<number, coda.Type.number>({
     description:
       'Pitch tilts the map, producing a perspective effect. A number between 0 and 60, measured in degrees. Defaults to 0 (looking straight down at the map).',
     optional: true,
+    suggestedValue: 0,
   }),
 });
 
-export const TwoXParam = new Param<boolean, coda.Type.boolean>({
-  key: undefined,
+export const TwoXParam = new Param<coda.ParameterType.Boolean>({
+  useKey: undefined,
   rules: (val) => [typeof val === 'boolean'],
   formatValue: (val) => (val ? '@2X' : ''),
-  default: false,
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
     name: 'twoX',
     description:
       'Render the static map at a @2x scale factor for high-density displays.',
     optional: true,
+    suggestedValue: false,
   }),
 });
 
-export const AttributionParam = new Param<boolean, coda.Type.boolean>({
-  key: 'attribution',
-  default: true,
+export const AttributionParam = new Param<coda.ParameterType.Boolean>({
+  useKey: true,
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
     name: 'attribution',
     description:
       'Controls whether there is attribution on the image. Defaults to true. Note: If attribution=false, the watermarked attribution is removed from the image. You still have a legal responsibility to attribute maps that use OpenStreetMap data, which includes most maps from Mapbox. If you specify attribution=false, you are legally required to include proper attribution elsewhere on the webpage or document.',
     optional: true,
+    suggestedValue: true,
   }),
 });
-export const LogoParam = new Param<boolean, coda.Type.boolean>({
-  key: 'logo',
-  default: true,
+export const LogoParam = new Param<coda.ParameterType.Boolean>({
+  useKey: true,
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
     name: 'logo',
     description:
       'Controls whether there is a Mapbox logo on the image. Defaults to true.',
     optional: true,
+    suggestedValue: true,
   }),
 });
 
-export const BeforeLayerParam = new Param<string, coda.Type.string>({
-  key: 'before_layer',
+export const BeforeLayerParam = new Param<coda.ParameterType.String>({
+  useKey: true,
   rules: (text) => [typeof text === 'string'],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.String,
@@ -212,12 +195,27 @@ export const BeforeLayerParam = new Param<string, coda.Type.string>({
   }),
 });
 
-//  // TODO evaluate fobject param
+//  // TODO evaluate object param
 // export const AddLayerParam = new Param<string[], coda.Type.object>({
 //   key: undefined,
 //   formatValue: (arg) => arg.join(),
 //   validate: (value) =>
 //     Array.isArray(value) && value.every((e) => typeof e === 'string'),
+//   codaDef: coda.makeParameter({
+//     type: coda.ParameterType.StringArray,
+//     name: 'addLayer',
+//     description:
+//       "Applies a filter to an existing layer in a style using Mapbox's expression syntax. Must be used with layer_id. See Style Parameters for more information.",
+//     optional: true,
+//   }),
+// });
+
+// export const SetFilterParam = new Param<coda.ParameterType.StringArray>({
+//   //TODO evaluate formatter and validator
+//   formatValue: (arg) => arg.join(),
+//   rules: (value) => [
+//     Array.isArray(value) && value.every((e) => typeof e === 'string'),
+//   ],
 //   codaDef: coda.makeParameter({
 //     type: coda.ParameterType.StringArray,
 //     name: 'setFilter',
@@ -227,27 +225,7 @@ export const BeforeLayerParam = new Param<string, coda.Type.string>({
 //   }),
 // });
 
-export const SetFilterParam = new Param<
-  string[],
-  coda.ArrayType<coda.Type.string>
->({
-  key: undefined,
-  //TODO evaluate formatter and validator
-  formatValue: (arg) => arg.join(),
-  rules: (value) => [
-    Array.isArray(value) && value.every((e) => typeof e === 'string'),
-  ],
-  codaDef: coda.makeParameter({
-    type: coda.ParameterType.StringArray,
-    name: 'setFilter',
-    description:
-      "Applies a filter to an existing layer in a style using Mapbox's expression syntax. Must be used with layer_id. See Style Parameters for more information.",
-    optional: true,
-  }),
-});
-
-export const LayerIdParam = new Param<string, coda.Type.string>({
-  key: undefined,
+export const LayerIdParam = new Param<coda.ParameterType.String>({
   rules: (text) => [typeof text === 'string'],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.String,
@@ -257,11 +235,8 @@ export const LayerIdParam = new Param<string, coda.Type.string>({
     optional: true,
   }),
 });
-export const PaddingParam = new Param<
-  string[],
-  coda.ArrayType<coda.Type.string>
->({
-  key: 'padding',
+export const PaddingParam = new Param<coda.ParameterType.StringArray>({
+  useKey: true,
   rules: (val) => [val.length > 0, val.length < 5],
   formatValue: (val) => val.join(),
   codaDef: coda.makeParameter({
@@ -273,30 +248,29 @@ export const PaddingParam = new Param<
   }),
 });
 
-export const DraftParam = new Param<boolean, coda.Type.boolean>({
-  key: undefined,
-  default: false,
+export const DraftParam = new Param<coda.ParameterType.Boolean>({
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
     name: 'draft',
     description: 'Retrieve the draft version of a style.',
     optional: true,
+    suggestedValue: false,
   }),
 });
 
-export const ZoomWheelParam = new Param<boolean, coda.Type.boolean>({
-  key: 'zoomWheel',
-  default: true,
+export const ZoomWheelParam = new Param<coda.ParameterType.Boolean>({
+  useKey: true,
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
     name: 'zoomWheel',
     description:
       'Whether to provide a zoomwheel, which enables a viewer to zoom in and out of the map using the mouse (true, default), or not (false).',
     optional: true,
+    suggestedValue: true,
   }),
 });
-export const TitleParam = new Param<string, coda.Type.string>({
-  key: 'title',
+export const TitleParam = new Param<coda.ParameterType.String>({
+  useKey: true,
   rules: (text) => [typeof text === 'string'],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.String,
@@ -306,19 +280,18 @@ export const TitleParam = new Param<string, coda.Type.string>({
     optional: true,
   }),
 });
-export const FallbackParam = new Param<boolean, coda.Type.boolean>({
-  key: 'fallback',
-  default: false,
+export const FallbackParam = new Param<coda.ParameterType.Boolean>({
+  useKey: true,
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
     name: 'fallback',
     description: 'Serve a fallback raster map (true) or not (false, default).',
     optional: true,
+    suggestedValue: false,
   }),
 });
 
-export const DatasetIdParam = new Param<string, coda.Type.string>({
-  key: undefined,
+export const DatasetIdParam = new Param<coda.ParameterType.String>({
   rules: (text) => [typeof text === 'string'],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.String,
@@ -329,8 +302,7 @@ export const DatasetIdParam = new Param<string, coda.Type.string>({
   }),
 });
 
-export const FeatureIdParam = new Param<string, coda.Type.string>({
-  key: undefined,
+export const FeatureIdParam = new Param<coda.ParameterType.String>({
   rules: (text) => [typeof text === 'string'],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.String,
@@ -340,8 +312,7 @@ export const FeatureIdParam = new Param<string, coda.Type.string>({
     optional: false,
   }),
 });
-export const GeoJSONFeatureParam = new Param<string, coda.Type.string>({
-  key: undefined,
+export const GeoJSONFeatureParam = new Param<coda.ParameterType.String>({
   rules: (text) => [typeof text === 'string'],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.String,
@@ -352,9 +323,8 @@ export const GeoJSONFeatureParam = new Param<string, coda.Type.string>({
   }),
 });
 
-export const RadiusParam = new Param<number, coda.Type.number>({
-  key: 'radius',
-  default: 0,
+export const RadiusParam = new Param<coda.ParameterType.Number>({
+  useKey: true,
   rules: (val) => [typeof val === 'number' && val >= 0],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Number,
@@ -362,11 +332,11 @@ export const RadiusParam = new Param<number, coda.Type.number>({
     description:
       'The approximate distance to query for features, in meters. Defaults to 0, which performs a point-in-polygon query. Has no upper bound. Required for queries against point and line data. Due to the nature of tile buffering, a query with a large radius made against equally large point or line data may not include all possible features in the results. Queries will use tiles from the maximum zoom of the tileset, and will only include the intersecting tile plus eight surrounding tiles when searching for nearby features.',
     optional: true,
+    suggestedValue: 0,
   }),
 });
-export const LimitParam = new Param<number, coda.Type.number>({
-  key: 'limit',
-  default: 5,
+export const LimitParam = new Param<coda.ParameterType.Number>({
+  useKey: true,
   rules: (val) => [typeof val === 'number' && val >= 0 && val <= 50],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Number,
@@ -374,11 +344,11 @@ export const LimitParam = new Param<number, coda.Type.number>({
     description:
       'The number of features between 1-50 to return. Defaults to 5. The specified number of features are returned in order of their proximity to the queried {lon},{lat}.',
     optional: true,
+    suggestedValue: 5,
   }),
 });
-export const DedupeParam = new Param<boolean, coda.Type.boolean>({
-  key: 'dedupe',
-  default: true,
+export const DedupeParam = new Param<coda.ParameterType.Boolean>({
+  useKey: true,
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
     name: 'dedupe',
@@ -389,8 +359,8 @@ export const DedupeParam = new Param<boolean, coda.Type.boolean>({
   }),
 });
 
-export const GeometryTypeParam = new Param<string, coda.Type.string>({
-  key: 'geometry',
+export const GeometryTypeParam = new Param<coda.ParameterType.String>({
+  useKey: true,
   rules: (text) => [
     typeof text === 'string',
     ['polygon', 'linestring', 'point'].includes(text),
@@ -404,11 +374,8 @@ export const GeometryTypeParam = new Param<string, coda.Type.string>({
     autocomplete: ['polygon', 'linestring', 'point'],
   }),
 });
-export const LayersParam = new Param<
-  string[],
-  coda.ArrayType<coda.Type.string>
->({
-  key: 'layers',
+export const LayersParam = new Param<coda.ParameterType.StringArray>({
+  useKey: true,
   rules: (text) => [typeof text === 'string'],
   formatValue: (arg) => arg.join(),
   codaDef: coda.makeParameter({

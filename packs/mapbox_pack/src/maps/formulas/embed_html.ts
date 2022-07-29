@@ -1,9 +1,12 @@
 import * as coda from '@codahq/packs-sdk';
 import checkValidAndPublic from '../../account/check_valid';
 import getDefaultToken from '../../account/defaultToken';
-import {baseUrl, MapBoxClient} from '../../shared/client';
+import {baseUrl} from '../../shared/client';
 import {LatParam, LonParam, Param} from '../../shared/params/param';
-import {coordinatePairMatcher} from '../../shared/utility_functions';
+import {
+  coordinatePairMatcher,
+  populateParams,
+} from '../../shared/utility_functions';
 import {
   BearingParam,
   DraftParam,
@@ -17,7 +20,7 @@ import {
   ZoomWheelParam,
 } from '../parameters';
 
-const htmlEmbedParams: Param<any, any>[] = [
+const htmlEmbedParams: Param<any>[] = [
   StyleParam,
   SearchParam,
   ZoomParam,
@@ -36,18 +39,20 @@ export const htmlEmbed = coda.makeFormula({
   resultType: coda.ValueType.String,
   codaType: coda.ValueHintType.Url,
   name: 'Map',
-  description:
-    'Embed url that shows a map in your selected style. Recommended to set force: true in Embed formula. You can optionally pass a temporary token using the { GenerateToken } formula to, otherwise it will use the default token associated with your mapbox account.',
-  // TODO  examples:
+  description: `Embed url that shows a map in your selected style. Pass coordinates or use the search param to lookup a place without leaving the formula editor.
+  Recommended to manually use Embed formula with force: true.`,
+  examples: [
+    {
+      params: [],
+      result:
+        '"https://api.mapbox.com/styles/v1/mapbox/streets-v11.html?access_token=YOUR_PUBLIC_TOKEN#15/37.771/-122.436/0/0"',
+    },
+  ],
   parameters: htmlEmbedParams.map((p) => p.codaDef) as coda.ParamDefs,
   execute: async function (params, context) {
-    for (let p of params) {
-      htmlEmbedParams[params.indexOf(p)].setValue(p);
-    }
+    populateParams(params, htmlEmbedParams);
 
     let useSearch = coordinatePairMatcher.test(SearchParam.getValue());
-    console.log(useSearch);
-    console.log(SearchParam.getValue());
 
     if (useSearch) {
       let coords = SearchParam.getValue().split(',');
@@ -56,7 +61,7 @@ export const htmlEmbed = coda.makeFormula({
     }
 
     let token =
-      TokenParam.include() &&
+      TokenParam.meetsConditions() &&
       checkValidAndPublic(context, TokenParam.getValue())
         ? TokenParam.getValue()
         : await getDefaultToken(context);
@@ -66,7 +71,7 @@ export const htmlEmbed = coda.makeFormula({
     } = {};
 
     for (var p of htmlEmbedParams) {
-      if (p.key && p.include()) queryParams[p.key] = p.getValue();
+      if (p.key && p.meetsConditions()) queryParams[p.key] = p.getValue();
     }
 
     return (
