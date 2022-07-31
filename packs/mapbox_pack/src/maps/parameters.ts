@@ -1,6 +1,8 @@
 import * as coda from '@codahq/packs-sdk';
 import {autocompleteGeocode, geocode} from '../search/formulas/geocode';
+import {makiIcons} from '../shared/params/constants';
 import {BboxParamOptions, Param} from '../shared/params/param';
+import {hexColorMatcher, rmSpacesLineBreaks} from '../shared/utility_functions';
 import {
   autocompleteLayersForStyle,
   autocompleteStyles,
@@ -69,17 +71,49 @@ export const TilesetParam = new Param<coda.ParameterType.String>({
   }),
 });
 
-export const OverlayParam = new Param<coda.ParameterType.StringArray>({
-  rules: (val) => [Array.isArray(val)],
+export const GeoJSONParam = new Param<coda.ParameterType.StringArray>({
+  formatValue: (val) =>
+    val.map((p) => {
+      return `geojson(${encodeURIComponent(
+        p.replace(rmSpacesLineBreaks, '')
+      )})`;
+    }),
   codaDef: coda.makeParameter({
     type: coda.ParameterType.StringArray,
-    name: 'overlay',
+    name: 'geoJsonOverlay',
     description:
-      'One or more comma-separated features that can be applied on top of the map at request time. The order of features in an overlay dictates their Z-order on the page. The last item in the list will have the highest Z-order (will overlap the other features in the list), and the first item in the list will have the lowest (will underlap the other features). Format can be a mix of geojson, marker, or path. For more details on each option, see the Overlay options section.',
+      'Add a stringified geojson feature or feature set to Static Image. May fail if with a particularly large dataset such as a detailed Isochrone because of API limitations...https://docs.mapbox.com/api/maps/static-images/#overlay-options',
     optional: true,
   }),
 });
-
+export const PinsParam = new Param<coda.ParameterType.StringArray>({
+  formatValue: (val) => {
+    if (val.length >= 1) {
+      return val.join();
+    } else return '';
+  },
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.StringArray,
+    name: 'markerOverlay',
+    description:
+      'Accepts a string in the following format https://docs.mapbox.com/api/maps/static-images/#marker to add a marker overlay on top of a static image, recommended to use MarkerOverlay() formula',
+    optional: true,
+  }),
+});
+export const PolylinesParam = new Param<coda.ParameterType.StringArray>({
+  formatValue: (val) => {
+    if (val.length >= 1) {
+      return val.join();
+    } else return '';
+  },
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.StringArray,
+    name: 'pathOverlay',
+    description:
+      'Accepts an encoded polyline to overlay on top of a static image, recommended to use PathOverlay() formula if need to encode a polyline within your doc',
+    optional: true,
+  }),
+});
 export const ZoomParam = new Param<coda.ParameterType.Number>({
   rules: (val) => [typeof val === 'number' && val >= 0 && val <= 22],
   codaDef: coda.makeParameter({
@@ -225,16 +259,16 @@ export const BeforeLayerParam = new Param<coda.ParameterType.String>({
 //   }),
 // });
 
-export const LayerIdParam = new Param<coda.ParameterType.String>({
-  rules: (text) => [typeof text === 'string'],
-  codaDef: coda.makeParameter({
-    type: coda.ParameterType.String,
-    name: 'layer_id',
-    description:
-      'Denotes the layer in the style that the filter specified in setfilter is applied to.',
-    optional: true,
-  }),
-});
+// export const LayerIdParam = new Param<coda.ParameterType.String>({
+//   rules: (text) => [typeof text === 'string'],
+//   codaDef: coda.makeParameter({
+//     type: coda.ParameterType.String,
+//     name: 'layer_id',
+//     description:
+//       'Denotes the layer in the style that the filter specified in setfilter is applied to.',
+//     optional: true,
+//   }),
+// });
 export const PaddingParam = new Param<coda.ParameterType.StringArray>({
   useKey: true,
   rules: (val) => [val.length > 0, val.length < 5],
@@ -384,5 +418,114 @@ export const LayersParam = new Param<coda.ParameterType.StringArray>({
     description:
       '	A comma-separated list of layers to query, rather than querying all layers. If a specified layer does not exist, it is skipped. If no layers exist, returns an empty FeatureCollection.',
     optional: true,
+  }),
+});
+
+export const MarkerSizeParam = new Param<coda.ParameterType.Boolean>({
+  formatValue: (arg) => (arg ? 'pin-l' : 'pin-s'),
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.Boolean,
+    name: 'large',
+    description: 'Return a larger sized marker',
+    optional: true,
+    suggestedValue: false,
+  }),
+});
+export const CustomMarkerParam = new Param<coda.ParameterType.String>({
+  rules: (text) => [typeof text === 'string', text.length >= 1],
+  formatValue: (arg) => {
+    let uri = arg;
+    return uri !== decodeURIComponent(uri) ? uri : encodeURIComponent(uri);
+  },
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.String,
+    name: 'customMarker',
+    description:
+      'Accepts a percent-encoded URL for a PNG or JPG image to be used as a custom marker for a static image.',
+    optional: true,
+  }),
+});
+export const MarkerLabelParam = new Param<coda.ParameterType.String>({
+  rules: (text) => [
+    typeof text === 'string',
+    makiIcons.includes(text) || /([1-9]\d?|[a-z])/.test(text.toLowerCase()),
+  ],
+  formatValue: (arg) => arg.toLowerCase(),
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.String,
+    name: 'label',
+    description:
+      'Marker label, valid values are single letters a-z, numbers 1-99, or a maki icon (available icons can be found using GetOptions() formula). ',
+    optional: true,
+  }),
+});
+export const MarkerColorParam = new Param<coda.ParameterType.String>({
+  formatValue: (arg) => arg.replace('#', ''),
+  rules: (text) => [typeof text === 'string', hexColorMatcher.test(text)],
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.String,
+    name: 'color',
+    description: 'Accepts valid 3 or 6 digit hex values.',
+    optional: true,
+  }),
+});
+
+export const StrokeWidthParam = new Param<coda.ParameterType.Number>({
+  rules: (val) => [typeof val === 'number', val >= 0, val <= 16],
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.Number,
+    name: 'strokeWidth',
+    description: 'Accepts a number between 0 and 16',
+    optional: true,
+  }),
+});
+export const StrokeColorParam = new Param<coda.ParameterType.String>({
+  formatValue: (arg) => arg.replace('#', ''),
+  rules: (text) => [typeof text === 'string', hexColorMatcher.test(text)],
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.String,
+    name: 'strokeColor',
+    description: 'Accepts valid 3 or 6 digit hex values',
+    optional: true,
+  }),
+});
+export const StrokeOpacityParam = new Param<coda.ParameterType.Number>({
+  rules: (val) => [typeof val === 'number'],
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.Number,
+    name: 'strokeOpacity',
+    description:
+      'A number between 0 (transparent) and 1 (opaque) for line stroke opacity',
+    optional: true,
+  }),
+});
+export const FillColorParam = new Param<coda.ParameterType.String>({
+  formatValue: (arg) => arg.replace('#', ''),
+  rules: (text) => [typeof text === 'string', hexColorMatcher.test(text)],
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.String,
+    name: 'fillColor',
+    description: 'Accepts valid 3 or 6 digit hex values.',
+    optional: true,
+  }),
+});
+export const FillOpacityParam = new Param<coda.ParameterType.Number>({
+  rules: (val) => [typeof val === 'number'],
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.Number,
+    name: 'fillOpacity',
+    description:
+      'A number between 0 (transparent) and 1 (opaque) for line stroke opacity',
+    optional: true,
+  }),
+});
+
+export const PolylineParam = new Param<coda.ParameterType.String>({
+  rules: (text) => [typeof text === 'string'],
+  codaDef: coda.makeParameter({
+    type: coda.ParameterType.String,
+    name: 'polyline',
+    description:
+      'Accepts either an encoded polyline (i.e. "_p~iF~ps|U_ulLnnqC_mqNvxq`@") or a stringified list of [lat,lon] pairs ([[-120.2, 38.5], [-120.95, 40.7], [-126.453, 43.252]])',
   }),
 });

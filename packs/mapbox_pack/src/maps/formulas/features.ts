@@ -73,12 +73,30 @@ export const addFeature = coda.makeFormula({
   isAction: true,
   name: 'AddFeature',
   description: 'Insert or update a feature in a specified dataset. ',
+  examples: [
+    {
+      params: [
+        'datasetId: "cl3gejjil19xa21oxpjfscr96"',
+        'featureId: myFeatureID',
+        `feature: {
+          geometry: {
+            coordinates: [-76.49104648891985, 38.97886653092155],
+            type: 'Point',
+          },
+          type: 'Feature',
+          properties: {},
+        }`,
+      ],
+      result: 'OK',
+    },
+  ],
   parameters: addFeatureParams.map((p) => p.codaDef) as coda.ParamDefs,
   execute: async (params, context) => {
     populateParams(params, addFeatureParams);
 
     let feature = JSON.parse(GeoJSONFeatureParam.getValue());
     feature.id = FeatureIdParam.getValue();
+
     const client = new MapBoxClient({
       context,
       endpoint: 'datasets/v1/',
@@ -98,6 +116,15 @@ export const deleteFeature = coda.makeFormula({
   name: 'DeleteFeature',
   isAction: true,
   description: 'Delete a feature in a specified dataset.',
+  examples: [
+    {
+      params: [
+        'datasetId: "cl3gejjil19xa21oxpjfscr96"',
+        'featureId: myFeatureID',
+      ],
+      result: 'OK',
+    },
+  ],
   parameters: removeFeatureParams.map((p) => p.codaDef) as coda.ParamDefs,
   execute: async (params, context) => {
     populateParams(params, removeFeatureParams);

@@ -38,11 +38,10 @@ export const tilequery = coda.makeFormula({
     {params: ['central park'], result: '{FeatureCollection}'},
     {
       params: [
+        'mapbox.mapbox-terrain-v2',
         'statue of liberty',
-        'autocomplete:true',
-        'country: ["US"]',
-        'limit:5',
-        'proximity: ip',
+        'limit: 5',
+        'radius: 150',
       ],
       result: '{FeatureCollection}',
     },

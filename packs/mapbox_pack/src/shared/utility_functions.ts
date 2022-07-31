@@ -6,6 +6,10 @@ export const coordinatePairMatcher = new RegExp(
   ''
 );
 
+export const hexColorMatcher = /([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/;
+
+export const rmSpacesLineBreaks = /[\s\n\r]+/g;
+
 export const populateParams = function (
   inputs: any[],
   params: Param<any>[]
@@ -22,7 +26,7 @@ export const validate = function (condition: boolean, format: string) {
       error = new coda.UserVisibleError('An exception occurred');
     } else {
       error = new coda.UserVisibleError(format);
-      error.name = 'Invariant Violation';
+      error.name = 'Invalid Parameter';
     }
 
     throw error;

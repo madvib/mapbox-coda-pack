@@ -14,11 +14,23 @@ export const tilesetSyncTable = coda.makeSyncTable({
     description: '',
     parameters: [],
     execute: async (_, context) => {
-      let response = await await getTilesets(context);
+      let response = await getTilesets(context);
       return {result: response};
     },
   },
 });
+
+export async function autocompleteTilesets(
+  context: coda.ExecutionContext,
+  search: string
+) {
+  let tilesets: Array<any> = await getTilesets(context);
+  tilesets.map((t) => {
+    return {name: t.name, value: t.id};
+  });
+  let results = [...tilesets, ...MapBoxTilesets];
+  return coda.autocompleteSearchObjects(search, results, 'name', 'value');
+}
 
 export async function getTilesets(context: coda.ExecutionContext) {
   const client = new MapBoxClient({
@@ -30,15 +42,4 @@ export async function getTilesets(context: coda.ExecutionContext) {
   let response = await client.get();
 
   return response;
-}
-export async function autocompleteTilesets(
-  context: coda.ExecutionContext,
-  search: string
-) {
-  let tilesets: Array<any> = await getTilesets(context);
-  tilesets.map((t) => {
-    return {name: t.name, value: t.id};
-  });
-  let results = [...tilesets, ...MapBoxTilesets];
-  return coda.autocompleteSearchObjects(search, results, 'name', 'value');
 }

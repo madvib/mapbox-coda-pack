@@ -1,11 +1,11 @@
-import {ParamDefs, ParamValues} from '@codahq/packs-sdk';
+import {PackFormulaValue, ParamDefs, ParamValues} from '@codahq/packs-sdk';
 import {executeFormulaFromPackDef} from '@codahq/packs-sdk/dist/development';
 import {assert} from 'chai';
 import {liveTest, pack} from '../../pack';
 
 if (liveTest) {
   describe('Static Image Formula', () => {
-    const params = {
+    const params: {[key: string]: PackFormulaValue} = {
       position: 'center',
       token: undefined,
       style: undefined,
@@ -20,11 +20,12 @@ if (liveTest) {
       bearing: 0,
       pitch: 0,
       bbox: undefined,
-      overlay: [
+      geoJSON: [
         `{"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-122.4285,37.763658]}}]}`,
       ],
+      pins: [],
+      polylines: [],
       beforelayer: undefined,
-      layerId: undefined,
       padding: undefined,
     };
     it('returns a valid url', async () => {

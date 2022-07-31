@@ -4,7 +4,7 @@ import {validate} from '../utility_functions';
 
 type Validator<T> = (arg: T | undefined) => boolean[];
 type Formatter<T> = (arg: T) => any;
-type Primitive<C extends coda.ParameterType> = coda.SuggestedValueType<
+export type Primitive<C extends coda.ParameterType> = coda.SuggestedValueType<
   ParameterTypeMap[C]
 >;
 

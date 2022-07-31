@@ -1,5 +1,6 @@
 import * as coda from '@codahq/packs-sdk';
 import {Param} from '../shared/params/param';
+import {rmSpacesLineBreaks as spacesLineBreaks} from '../shared/utility_functions';
 
 export const ProfileParam = function (directions: boolean) {
   return new Param<coda.ParameterType.String>({
@@ -29,7 +30,7 @@ export const CoordinatesParam = new Param<coda.ParameterType.StringArray>({
       parseFloat(val.split(',')[1]) <= 85.0511;
     //remove invalid coordinates and white space
     coords.filter(parseCoords);
-    return coords.join(';').replace(/\s+/g, '');
+    return coords.join(';').replace(spacesLineBreaks, '');
   },
   codaDef: coda.makeParameter({
     type: coda.ParameterType.StringArray,

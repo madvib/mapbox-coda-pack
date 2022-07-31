@@ -1,18 +1,15 @@
 import {ParamDefs, ParamValues, SyncExecutionContext} from '@codahq/packs-sdk';
 import {
   executeFormulaFromPackDef,
-  executeMetadataFormula,
   executeSyncFormulaFromPackDef,
   newRealFetcherSyncExecutionContext,
 } from '@codahq/packs-sdk/dist/development';
 import {assert} from 'chai';
 import {liveTest, pack} from '../../pack';
-import {featuresDynamicSyncTable} from '../../src/maps/formulas/features';
 
 if (liveTest) {
   describe('Features', () => {
     // let ctx: SyncExecutionContext;
-    // executeMetadataFormula;
     // beforeEach(() => {
     //   try {
     //     ctx = newRealFetcherSyncExecutionContext(pack, '../../pack');

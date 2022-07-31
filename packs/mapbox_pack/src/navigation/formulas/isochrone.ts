@@ -45,7 +45,7 @@ export default coda.makeFormula({
     },
   ],
   description:
-    'The Isochrone API allows you to request polygon or line features that show areas that are reachable within a specified amount of time from a location. Returns a GeoJSON string',
+    'Request polygon or line features that show areas that are reachable within a specified amount of time from a location. Returns a raw GeoJSON string',
   parameters: isochroneParams.map((p) => p.codaDef) as coda.ParamDefs,
 
   execute: async function (params, context) {

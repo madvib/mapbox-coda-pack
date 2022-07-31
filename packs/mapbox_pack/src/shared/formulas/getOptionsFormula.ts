@@ -1,5 +1,5 @@
 import * as coda from '@codahq/packs-sdk';
-import {CountryCodes, makiIcons, MapboxPlaceTypes} from './constants';
+import {CountryCodes, makiIcons, MapboxPlaceTypes} from '../params/constants';
 
 export const getOptions = coda.makeFormula({
   name: 'GetOptions',
@@ -7,6 +7,12 @@ export const getOptions = coda.makeFormula({
     'Access possible options for various parameters, see autocomplete for available parameters. Recommended to pair with controls such as a single or multi-select.',
   resultType: coda.ValueType.Array,
   items: {type: coda.ValueType.String},
+  examples: [
+    {
+      params: ['place_type'],
+      result: ['poi', 'address', '...'],
+    },
+  ],
   parameters: [
     coda.makeParameter({
       name: 'parameter',

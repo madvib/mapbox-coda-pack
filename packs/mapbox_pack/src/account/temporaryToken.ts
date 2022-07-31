@@ -47,7 +47,7 @@ export const generateToken = coda.makeFormula({
   name: 'GenerateToken',
   resultType: coda.ValueType.String,
   description:
-    'Create a temporary token, useful in other formulas with a client-exposed token such as HTML Embed. Secret access token must have [tokens: read, write] scopes enabled',
+    'Create a temporary token, useful in other formulas with a client-exposed token such as Map() and StaticImage(). Secret token used to create a temp token must have [tokens: read, write] scopes enabled',
   cacheTtlSecs: 0,
   examples: [
     {

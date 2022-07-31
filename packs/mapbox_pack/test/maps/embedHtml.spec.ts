@@ -7,12 +7,12 @@ if (liveTest) {
   describe('Map Formula', () => {
     const params = {
       style: undefined,
-      search: undefined,
+      long: -122.436,
+      lat: 37.771,
       zoom: undefined,
-      lat: 40.7306,
-      long: -73.76291,
       bearing: 0,
       pitch: 0,
+      search: undefined,
       token: undefined,
       zoomWheel: true,
       title: undefined,
@@ -30,6 +30,11 @@ if (liveTest) {
       );
       console.log(result);
       assert.typeOf(result, 'string');
+      assert.isTrue(
+        (result as string).startsWith(
+          'https://api.mapbox.com/styles/v1/mapbox/streets-v11.html?'
+        )
+      );
     });
   });
 }
