@@ -76,6 +76,7 @@ export const staticImage = coda.makeFormula({
         ? TokenParam.getValue()
         : await getDefaultToken(context);
 
+    console.log(PinsParam.getValue());
     function getOverlays() {
       let overlays: string[] = [
         ...GeoJSONParam.getValue(),
@@ -85,6 +86,7 @@ export const staticImage = coda.makeFormula({
 
       return overlays.join() !== '' ? overlays.join() + '/' : '';
     }
+    console.log(getOverlays());
 
     function getPosition() {
       let position: string;
@@ -119,6 +121,7 @@ export const staticImage = coda.makeFormula({
         `${StyleParam.getValue()}/static/${getOverlays()}${getPosition()}/${WidthParam.getValue()}x${HeightParam.getValue()}${TwoXParam.getValue()}`,
       {...queryParams, access_token: token}
     );
+    console.log(url);
     return url;
   },
 });

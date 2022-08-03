@@ -1,5 +1,10 @@
 import * as coda from '@codahq/packs-sdk';
-import {CountryCodes, makiIcons, MapboxPlaceTypes} from '../params/constants';
+import {
+  CountryCodes,
+  directionsExclude,
+  makiIcons,
+  MapboxPlaceTypes,
+} from '../params/constants';
 
 export const getOptions = coda.makeFormula({
   name: 'GetOptions',
@@ -18,7 +23,12 @@ export const getOptions = coda.makeFormula({
       name: 'parameter',
       description: 'Select the parameter to fetch possible options for',
       type: coda.ParameterType.String,
-      autocomplete: ['place_type', 'icons', 'country_codes'],
+      autocomplete: [
+        'place_type',
+        'maki_icons',
+        'country_codes',
+        'directions_exclude',
+      ],
     }),
   ],
   execute: async ([param]) => {
@@ -29,6 +39,8 @@ export const getOptions = coda.makeFormula({
         return makiIcons;
       case 'country_codes':
         return Object.keys(CountryCodes);
+      case 'directions_exclude':
+        return directionsExclude;
       default:
         break;
     }

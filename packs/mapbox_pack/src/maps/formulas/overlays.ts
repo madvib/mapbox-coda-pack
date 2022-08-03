@@ -29,9 +29,9 @@ export const pathOverlay = coda.makeFormula({
   examples: [
     {
       params: [
-        'polyline: "%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM"',
+        'polyline: %7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM',
         'strokeWidth: 5',
-        'strokeColor: "f44"',
+        'strokeColor: f44',
         'strokeOpacity: 0.5',
       ],
       result:
@@ -83,8 +83,8 @@ export const markerOverlay = coda.makeFormula({
         'lon: -74.0021',
         'lat: 40.7338',
         'large: true',
-        'label: "embassy"',
-        'color: "f74e4e"',
+        'label: embassy',
+        'color: f74e4e',
       ],
       result: 'pin-l-embassy+f74e4e(-74.0021,40.7338)',
     },
@@ -92,7 +92,7 @@ export const markerOverlay = coda.makeFormula({
       params: [
         'lon: -74.0021',
         'lat: 40.7338',
-        'customMarker: "https%3A%2F%2Fdocs.mapbox.com%2Fapi%2Fimg%2Fcustom-marker.png"',
+        'customMarker: https%3A%2F%2Fdocs.mapbox.com%2Fapi%2Fimg%2Fcustom-marker.png',
       ],
       result:
         'url-https%3A%2F%2Fdocs.mapbox.com%2Fapi%2Fimg%2Fcustom-marker.png(-76.9,38.9)',
@@ -108,7 +108,7 @@ export const markerOverlay = coda.makeFormula({
       : '';
     let color: string = MarkerColorParam.meetsConditions()
       ? `+${MarkerColorParam.getValue()}`
-      : '555555';
+      : '';
     let customMarker = `url-${CustomMarkerParam.getValue()}`;
     let marker = `${MarkerSizeParam.getValue() + label + color}`;
 

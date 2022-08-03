@@ -1,7 +1,7 @@
 import * as coda from '@codahq/packs-sdk';
 import {generateToken} from './src/account/temporaryToken';
 import {datasetSyncTable} from './src/maps/formulas/data';
-import {htmlEmbed} from './src/maps/formulas/embed_html';
+import {htmlEmbed} from './src/maps/formulas/embedHtml';
 import {
   addFeature,
   deleteFeature,

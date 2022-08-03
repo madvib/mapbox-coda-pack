@@ -84,27 +84,31 @@ export const GeoJSONParam = new Param<coda.ParameterType.StringArray>({
     description:
       'Add a stringified geojson feature or feature set to Static Image. May fail if with a particularly large dataset such as a detailed Isochrone because of API limitations...https://docs.mapbox.com/api/maps/static-images/#overlay-options',
     optional: true,
+    suggestedValue: [],
   }),
 });
 export const PinsParam = new Param<coda.ParameterType.StringArray>({
   formatValue: (val) => {
-    if (val.length >= 1) {
-      return val.join();
-    } else return '';
+    if (typeof val === 'string') {
+      return [val];
+    }
+    return val ? val : [];
   },
   codaDef: coda.makeParameter({
     type: coda.ParameterType.StringArray,
     name: 'markerOverlay',
     description:
-      'Accepts a string in the following format https://docs.mapbox.com/api/maps/static-images/#marker to add a marker overlay on top of a static image, recommended to use MarkerOverlay() formula',
+      'Accepts a list of strings in the following format https://docs.mapbox.com/api/maps/static-images/#marker to add a marker overlay on top of a static image, recommended to use MarkerOverlay() formula',
     optional: true,
+    suggestedValue: [],
   }),
 });
 export const PolylinesParam = new Param<coda.ParameterType.StringArray>({
   formatValue: (val) => {
-    if (val.length >= 1) {
-      return val.join();
-    } else return '';
+    if (typeof val === 'string') {
+      return [val];
+    }
+    return val ? val : [];
   },
   codaDef: coda.makeParameter({
     type: coda.ParameterType.StringArray,
@@ -112,6 +116,7 @@ export const PolylinesParam = new Param<coda.ParameterType.StringArray>({
     description:
       'Accepts an encoded polyline to overlay on top of a static image, recommended to use PathOverlay() formula if need to encode a polyline within your doc',
     optional: true,
+    suggestedValue: [],
   }),
 });
 export const ZoomParam = new Param<coda.ParameterType.Number>({

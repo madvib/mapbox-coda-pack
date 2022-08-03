@@ -9,7 +9,7 @@ import {liveTest, pack} from '../../pack';
 if (liveTest) {
   describe('Search formula', () => {
     let context: MockExecutionContext;
-  
+
     beforeEach(() => {
       context = newMockExecutionContext();
     });
@@ -23,11 +23,11 @@ if (liveTest) {
       limit: 5,
       proximity: 'ip',
       routing: false,
-      types: ['pot', 'place'],
+      types: ['poi', 'place'],
       worldview: undefined,
       reverseMode: undefined,
     };
-  
+
     it('forward geocodes', async () => {
       const result = await executeFormulaFromPackDef(
         pack,
@@ -47,7 +47,7 @@ if (liveTest) {
         language: ['en'],
         limit: 1,
       };
-  
+
       const result = await executeFormulaFromPackDef(
         pack,
         'Search',

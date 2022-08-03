@@ -23,8 +23,8 @@ if (liveTest) {
       geoJSON: [
         `{"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-122.4285,37.763658]}}]}`,
       ],
-      pins: [],
-      polylines: [],
+      pins: ['pin-s(-70.45558,43.5051)'],
+      polylines: undefined,
       beforelayer: undefined,
       padding: undefined,
     };
@@ -41,7 +41,7 @@ if (liveTest) {
       assert.typeOf(result, 'string');
       assert.equal(
         decodeURIComponent(result),
-        'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/geojson({"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-122.4285,37.763658]}}]})/-122.3486,37.8169,9,0,0/300x200?attribution=true&logo=true&access_token=pk.eyJ1IjoibWFkdmliIiwiYSI6ImNsM2VzbXo1ZDAxYTAzanFpZHFzYzA5dW4ifQ.A718S5eVDHTXlJ06Y8v7kg'
+        'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/geojson({"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-122.4285,37.763658]}}]}),pin-s(-70.45558,43.5051)/-122.3486,37.8169,9,0,0/300x200?attribution=true&logo=true&access_token=pk.eyJ1IjoibWFkdmliIiwiYSI6ImNsM2VzbXo1ZDAxYTAzanFpZHFzYzA5dW4ifQ.A718S5eVDHTXlJ06Y8v7kg'
       );
     });
   });

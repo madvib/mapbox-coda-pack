@@ -54,9 +54,17 @@ export const ListStylesSchema = coda.makeObjectSchema({
   properties: {
     version: {type: coda.ValueType.Number},
     name: {type: coda.ValueType.String},
-    created: {type: coda.ValueType.String},
+    created: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.DateTime,
+      description: 'A timestamp indicating when the dataset was created.',
+    },
+    modified: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.DateTime,
+      description: 'A timestamp indicating when the dataset was last modified.',
+    },
     id: {type: coda.ValueType.String},
-    modified: {type: coda.ValueType.String},
     owner: {type: coda.ValueType.String},
     //TODO more props available
   },
@@ -76,10 +84,6 @@ export const TilesetSchema = coda.makeObjectSchema({
         'The longitude, latitude, and zoom level for the center of the contained data, given in the format [lon, lat, zoom].',
       items: {type: coda.ValueType.Number},
     },
-    created: {
-      type: coda.ValueType.String,
-      description: 'A timestamp indicating when the tileset was created.',
-    },
     description: {
       type: coda.ValueType.String,
       description: 'A human-readable description of the tileset.',
@@ -92,9 +96,15 @@ export const TilesetSchema = coda.makeObjectSchema({
       type: coda.ValueType.String,
       description: 'The unique identifier for the tileset.',
     },
+    created: {
+      type: coda.ValueType.String,
+      codaType: coda.ValueHintType.DateTime,
+      description: 'A timestamp indicating when the dataset was created.',
+    },
     modified: {
       type: coda.ValueType.String,
-      description: 'A timestamp indicating when the tileset was last modified.',
+      codaType: coda.ValueHintType.DateTime,
+      description: 'A timestamp indicating when the dataset was last modified.',
     },
     name: {
       type: coda.ValueType.String,

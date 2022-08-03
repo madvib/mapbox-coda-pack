@@ -36,6 +36,7 @@ export const SearchTextParam = new GeoParam<coda.ParameterType.String>({
 });
 
 export const AutocompleteParam = new GeoParam<coda.ParameterType.Boolean>({
+  useKey: true,
   reverseGeocode: false,
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
@@ -53,6 +54,7 @@ export const BboxGeoParam = new GeoParam<coda.ParameterType.NumberArray>({
 });
 
 export const CountryParam = new GeoParam<coda.ParameterType.StringArray>({
+  useKey: true,
   formatValue: (arg) => arg.join(),
   rules: (value) => [
     Array.isArray(value) && value.every((e) => typeof e === 'string'),
@@ -67,6 +69,7 @@ export const CountryParam = new GeoParam<coda.ParameterType.StringArray>({
 });
 
 export const FuzzyMatchParam = new GeoParam<coda.ParameterType.Boolean>({
+  useKey: true,
   reverseGeocode: false,
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
@@ -78,6 +81,8 @@ export const FuzzyMatchParam = new GeoParam<coda.ParameterType.Boolean>({
   }),
 });
 export const LanguageParam = new GeoParam<coda.ParameterType.StringArray>({
+  useKey: true,
+
   formatValue: (arg) => arg.join(),
   rules: (val) => [
     Array.isArray(val) && val.every((e) => typeof e === 'string'),
@@ -93,6 +98,7 @@ export const LanguageParam = new GeoParam<coda.ParameterType.StringArray>({
 
 const limitOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 export const LimitParam = new GeoParam<coda.ParameterType.Number>({
+  useKey: true,
   formatValue: (arg) => Math.trunc(arg),
   rules: (val) => [
     typeof val === 'number',
@@ -110,6 +116,7 @@ export const LimitParam = new GeoParam<coda.ParameterType.Number>({
 });
 
 export const ProximityParam = new GeoParam<coda.ParameterType.String>({
+  useKey: true,
   reverseGeocode: false,
   rules: (val) => [
     typeof val === 'string',
@@ -126,6 +133,7 @@ export const ProximityParam = new GeoParam<coda.ParameterType.String>({
 });
 
 export const RoutingParam = new GeoParam<coda.ParameterType.Boolean>({
+  useKey: true,
   codaDef: coda.makeParameter({
     type: coda.ParameterType.Boolean,
     name: 'routing',
@@ -137,6 +145,7 @@ export const RoutingParam = new GeoParam<coda.ParameterType.Boolean>({
 });
 
 export const TypesParam = new GeoParam<coda.ParameterType.StringArray>({
+  useKey: true,
   formatValue: (arg) => arg.join(),
   rules: (val) => [
     Array.isArray(val),
@@ -152,6 +161,7 @@ export const TypesParam = new GeoParam<coda.ParameterType.StringArray>({
 });
 
 export const WorldviewParam = new GeoParam<coda.ParameterType.String>({
+  useKey: true,
   rules: (text) => [typeof text === 'string'],
   codaDef: coda.makeParameter({
     type: coda.ParameterType.String,
@@ -165,6 +175,7 @@ export const WorldviewParam = new GeoParam<coda.ParameterType.String>({
 });
 
 export const ReverseModeParam = new GeoParam<coda.ParameterType.String>({
+  useKey: true,
   forwardGeocode: false,
   rules: (val) => [
     typeof val === 'string',

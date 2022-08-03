@@ -1,4 +1,5 @@
 import * as coda from '@codahq/packs-sdk';
+import {directionsExclude} from '../shared/params/constants';
 import {Param} from '../shared/params/param';
 import {rmSpacesLineBreaks as spacesLineBreaks} from '../shared/utility_functions';
 
@@ -57,27 +58,20 @@ export const ExcludeParam = function (profile: Param<any>) {
   return new Param<coda.ParameterType.StringArray>({
     useKey: true,
     formatValue: (arg) => {
-      const allVals = [
-        'motorway',
-        'toll',
-        'ferry',
-        'unpaved',
-        'cash_only_tolls',
-      ];
       let availablevalues: string[];
       switch (profile.getValue()) {
         case 'walking':
-          availablevalues = allVals.filter((p) =>
+          availablevalues = directionsExclude.filter((p) =>
             ['toll', 'motorway', 'unpaved'].includes(p)
           );
           break;
         case 'cycling':
-          availablevalues = allVals.filter((p) =>
+          availablevalues = directionsExclude.filter((p) =>
             ['toll', 'motorway', 'unpaved', 'ferry'].includes(p)
           );
           break;
         default:
-          availablevalues = allVals;
+          availablevalues = directionsExclude;
           break;
       }
       return arg.filter((p) => availablevalues.includes(p)).join();
@@ -86,7 +80,7 @@ export const ExcludeParam = function (profile: Param<any>) {
     codaDef: coda.makeParameter({
       name: 'exclude',
       description:
-        'Exclude certain road types and custom locations from routing. Default is to not exclude anything from the list below. You can specify multiple values as a comma-separated list. The following exclude values are available: motorway, toll, ferry, unpaved, cash_only_tolls',
+        'Exclude certain road types and custom locations from routing, nothing is excluded by default. You can specify multiple values as a comma-separated list. The following exclude values are available and can be retrieved using GetOptions("directions_exclude") formula: motorway, toll, ferry, unpaved, cash_only_tolls',
       type: coda.ParameterType.StringArray,
       optional: true,
     }),

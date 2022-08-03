@@ -86,7 +86,7 @@ export const htmlEmbed = coda.makeFormula({
       if (p.key && p.meetsConditions()) queryParams[p.key] = p.getValue();
     }
 
-    return (
+    let url =
       coda.withQueryParams(
         baseUrl +
           'styles/v1/' +
@@ -95,7 +95,8 @@ export const htmlEmbed = coda.makeFormula({
           }`,
         {...queryParams, access_token: token}
       ) +
-      `#${ZoomParam.getValue()}/${LatParam.getValue()}/${LonParam.getValue()}/${BearingParam.getValue()}/${PitchParam.getValue()}`
-    );
+      `#${ZoomParam.getValue()}/${LatParam.getValue()}/${LonParam.getValue()}/${BearingParam.getValue()}/${PitchParam.getValue()}`;
+    console.log(url);
+    return url;
   },
 });

@@ -107,7 +107,7 @@ export class MapBoxClient {
 
 export const getToken = function (context: coda.ExecutionContext) {
   let invocationToken = context.invocationToken;
-  let tokenPlaceholder = '{{access_token-' + invocationToken + '}}';
+  let tokenPlaceholder = '{{accessToken-' + invocationToken + '}}';
   return tokenPlaceholder;
 };
 

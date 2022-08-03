@@ -12,6 +12,13 @@ export const MapBoxTilesets = [
   {name: 'MapBox Streets', value: 'mapbox.mapbox-streets-v8'},
   {name: 'MapBox Terrain', value: 'mapbox.mapbox-terrain-v2'},
 ];
+export const directionsExclude = [
+  'motorway',
+  'toll',
+  'ferry',
+  'unpaved',
+  'cash_only_tolls',
+];
 export const makiIcons = [
   'aerialway',
   'airfield',

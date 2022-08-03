@@ -53,7 +53,7 @@ export class Param<C extends coda.ParameterType> {
     // throw user visible error if provided value is invalid
     validate(
       conditions,
-      `Entered ${this._value}...${this.codaDef.description}`
+      `${this.codaDef.name} parameter invalid. Entered value: ${this._value}...${this.codaDef.description}`
     );
 
     return conditions;
