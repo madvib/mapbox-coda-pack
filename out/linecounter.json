@@ -1,0 +1,345 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "/Users/madvib/dev/coda_packs",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2022-07-30 19:00:13",
+            "filesum": 51,
+            "codesum": 18117,
+            "commentsum": 77,
+            "blanksum": 263,
+            "statistics": {
+                ".ts": {
+                    "code": 3498,
+                    "comment": 72,
+                    "blank": 216
+                },
+                ".yml": {
+                    "code": 13,
+                    "comment": 5,
+                    "blank": 0
+                },
+                ".json": {
+                    "code": 14603,
+                    "comment": 0,
+                    "blank": 45
+                },
+                "": {
+                    "code": 3,
+                    "comment": 0,
+                    "blank": 2
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 2,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 0,
+                    "code": 13,
+                    "comment": 5,
+                    "filename": ".gitlab-ci.yml"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/.coda-credentials.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/.coda-pack.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/.coda.json"
+                },
+                {
+                    "blank": 4,
+                    "code": 57,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/pack.ts"
+                },
+                {
+                    "blank": 45,
+                    "code": 14543,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/package-lock.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 41,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/package.json"
+                },
+                {
+                    "blank": 3,
+                    "code": 14,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/account/check_valid.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/account/defaultToken.ts"
+                },
+                {
+                    "blank": 7,
+                    "code": 75,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/account/temporaryToken.ts"
+                },
+                {
+                    "blank": 4,
+                    "code": 28,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/maps/formulas/data.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 93,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/maps/formulas/embed_html.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 128,
+                    "comment": 2,
+                    "filename": "packs/mapbox_pack/src/maps/formulas/features.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 113,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/maps/formulas/overlays.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 116,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/maps/formulas/static_image.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 53,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/maps/formulas/styles.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 64,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/maps/formulas/tilequery.ts"
+                },
+                {
+                    "blank": 4,
+                    "code": 40,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/maps/formulas/tilesets.ts"
+                },
+                {
+                    "blank": 26,
+                    "code": 466,
+                    "comment": 39,
+                    "filename": "packs/mapbox_pack/src/maps/parameters.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 143,
+                    "comment": 2,
+                    "filename": "packs/mapbox_pack/src/maps/schema.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 51,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/navigation/formulas/directions.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 58,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/navigation/formulas/isochrone.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 198,
+                    "comment": 1,
+                    "filename": "packs/mapbox_pack/src/navigation/parameters.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 122,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/navigation/schema.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 87,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/search/formulas/geocode.ts"
+                },
+                {
+                    "blank": 15,
+                    "code": 167,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/search/parameters.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 77,
+                    "comment": 7,
+                    "filename": "packs/mapbox_pack/src/search/schema.ts"
+                },
+                {
+                    "blank": 11,
+                    "code": 103,
+                    "comment": 5,
+                    "filename": "packs/mapbox_pack/src/shared/client.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 35,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/shared/formulas/getOptionsFormula.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/shared/formulas/polylineEncoder.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 485,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/shared/params/constants.ts"
+                },
+                {
+                    "blank": 12,
+                    "code": 94,
+                    "comment": 5,
+                    "filename": "packs/mapbox_pack/src/shared/params/param.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 31,
+                    "comment": 1,
+                    "filename": "packs/mapbox_pack/src/shared/schema.ts"
+                },
+                {
+                    "blank": 7,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/src/shared/utility_functions.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 25,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/account/temp_token.spec.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 19,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/maps/data.spec.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 38,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/maps/embed_html.spec.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 64,
+                    "comment": 10,
+                    "filename": "packs/mapbox_pack/test/maps/features.spec.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 63,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/maps/overlays.spec.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 46,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/maps/static_image.spec.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 19,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/maps/styles.spec.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 32,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/maps/tilequery.spec.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 19,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/maps/tilesets.spec.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 34,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/navigation/directions.spec.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 30,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/navigation/isochrone.spec.ts"
+                },
+                {
+                    "blank": 4,
+                    "code": 59,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/search/geocode.spec.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 46,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/shared/param.spec.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/shared/polylineEncoder.spec.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 17,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/test/utils.spec.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": "packs/mapbox_pack/tsconfig.json"
+                }
+            ]
+        }
+    ]
+}
