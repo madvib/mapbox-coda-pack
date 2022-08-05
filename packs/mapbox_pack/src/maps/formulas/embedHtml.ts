@@ -49,7 +49,7 @@ export const htmlEmbed = coda.makeFormula({
     },
     {
       params: [
-        'style: "madvib/cl3gbvxgx000815to9dt19tt3"',
+        `style: "madvib/cl3gbvxgx000815to9dt19tt3"`,
         'long: -76.9',
         'lat: 38.9',
         'zoom: 12',

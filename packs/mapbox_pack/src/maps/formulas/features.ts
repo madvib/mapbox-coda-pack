@@ -49,10 +49,7 @@ export const featuresDynamicSyncTable = coda.makeDynamicSyncTable({
     description: '',
     parameters: [],
     execute: async (params, context) => {
-      //TODO this is hacky, waiting for bug fix pushed to release version of coda-packs
-      let setId = liveTest
-        ? 'cl3gejjil19xa21oxpjfscr96'
-        : context.sync.dynamicUrl;
+      let setId = context.sync.dynamicUrl; /
 
       const client = new MapBoxClient({
         context,
@@ -76,16 +73,9 @@ export const addFeature = coda.makeFormula({
   examples: [
     {
       params: [
-        'datasetId: "cl3gejjil19xa21oxpjfscr96"',
+        `datasetId: "cl3gejjil19xa21oxpjfscr96"`,
         'featureId: myFeatureID',
-        `feature: {
-          geometry: {
-            coordinates: [-76.49104648891985, 38.97886653092155],
-            type: 'Point',
-          },
-          type: 'Feature',
-          properties: {},
-        }`,
+        `feature: {geometry: {coordinates: [-76.49104648891985, 38.97886653092155],type: 'Point',},type: 'Feature',properties: {},}`,
       ],
       result: 'OK',
     },
@@ -119,7 +109,7 @@ export const deleteFeature = coda.makeFormula({
   examples: [
     {
       params: [
-        'datasetId: "cl3gejjil19xa21oxpjfscr96"',
+        `datasetId: "cl3gejjil19xa21oxpjfscr96"`,
         'featureId: myFeatureID',
       ],
       result: 'OK',

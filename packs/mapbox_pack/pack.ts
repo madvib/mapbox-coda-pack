@@ -45,7 +45,7 @@ pack.formulas.push(
 );
 
 pack.addNetworkDomain('mapbox.com');
-pack.setUserAuthentication({
+pack.setSystemAuthentication({
   type: coda.AuthenticationType.Custom,
   params: [
     {

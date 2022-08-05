@@ -12,7 +12,7 @@ const ExpiresParam = new Param<coda.ParameterType.Number>({
   codaDef: coda.makeParameter({
     name: 'expires',
     description:
-      'Time in minutes until the temporary token will expire. Cannot be a time in the past or more than one hour in the future. If the authorizing token is temporary, the expires time for the new temporary token cannot be later than that of the authorizing temporary token.',
+      'Time in minutes until the temporary token will expire. Cannot be in the past or more than one hour in the future.',
     type: coda.ParameterType.Number,
     optional: true,
     suggestedValue: 60,

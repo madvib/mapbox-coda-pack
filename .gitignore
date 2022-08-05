@@ -1,5 +1,9 @@
 .coda.json
 .coda-credentials.json
 
+.vscode/
 node_modules/
+out/*
 
+out/linecounter.json
+out/linecounter.txt

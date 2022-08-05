@@ -60,10 +60,9 @@ export const staticImage = coda.makeFormula({
         'height: 200',
         'lon: -122.3486',
         'lat: 37.8169',
-        'geoJsonOverlay: "{"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-122.4285,37.763658]}}]}"',
+        `geoJsonOverlay: "{"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-122.4285,37.763658]}}]}"`,
       ],
-      result:
-        '"https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/geojson({"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-122.4285,37.763658]}}]})/-122.3486,37.8169,9,0/300x200?access_token=YOUR_PUBLIC_TOKEN"',
+      result: `"https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/geojson({"type":"FeatureCollection","features":[{"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[-122.4285,37.763658]}}]})/-122.3486,37.8169,9,0/300x200?access_token=YOUR_PUBLIC_TOKEN"`,
     },
   ],
   parameters: staticImgParams.map((p) => p.codaDef) as coda.ParamDefs,

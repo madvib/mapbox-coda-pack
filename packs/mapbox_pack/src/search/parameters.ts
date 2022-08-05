@@ -42,7 +42,7 @@ export const AutocompleteParam = new GeoParam<coda.ParameterType.Boolean>({
     type: coda.ParameterType.Boolean,
     name: 'autocomplete',
     description:
-      'Specify whether to return autocomplete results (true, default) or not (false). When autocomplete is enabled, results will be included that start with the requested string, rather than just responses that match it exactly. Note this will result in more frequent requests.',
+      'Specify whether to return autocomplete results (true, default) or not (false). Note this will result in more frequent requests.',
     optional: true,
     suggestedValue: true,
   }),
@@ -75,7 +75,7 @@ export const FuzzyMatchParam = new GeoParam<coda.ParameterType.Boolean>({
     type: coda.ParameterType.Boolean,
     name: 'fuzzyMatch',
     description:
-      'Specify whether the Geocoding API should attempt approximate, as well as exact, matching when performing searches (true, default), or whether it should opt out of this behavior and only attempt exact matching (false). For example, the default setting might return Washington, DC for a query of wahsington, even though the query was misspelled.',
+      'Specify whether the Geocoding API should attempt approximate, as well as exact, matching when performing searches (true, default), or whether it should opt out of this behavior and only attempt exact matching (false).',
     optional: true,
     suggestedValue: true,
   }),
@@ -167,7 +167,7 @@ export const WorldviewParam = new GeoParam<coda.ParameterType.String>({
     type: coda.ParameterType.String,
     name: 'worldview',
     description:
-      '	Returns features that are defined differently by audiences that belong to various regional, cultural, or political groups. Available worldviews are cn (China),in (India),jp (Japan), and us (United States)',
+      'Returns features that are defined differently by audiences that belong to various regional, cultural, or political groups. Available worldviews are cn (China),in (India),jp (Japan), and us (United States)',
     optional: true,
     suggestedValue: 'us',
     autocomplete: WorldViews,

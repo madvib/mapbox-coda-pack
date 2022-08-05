@@ -48,7 +48,7 @@ export default coda.makeFormula({
       params: [
         'statue of liberty',
         'autocomplete:true',
-        'country: ["US"]',
+        `country: ["US"]`,
         'limit:5',
         'proximity: ip',
       ],

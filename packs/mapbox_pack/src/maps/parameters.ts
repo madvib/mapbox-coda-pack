@@ -20,7 +20,7 @@ export const PositionParam = new Param<coda.ParameterType.String>({
     type: coda.ParameterType.String,
     name: 'position',
     description:
-      'Choose one of three methods to position the camera for static image. "center": Determine position by passing coordinates, zoom, and optionally Pitch/Bearing, "bounding box": Set 4 coordinates to frame the image, "auto": Determines position automatically based on overlays or default center coordinates',
+      'Strategy to position camera. "center": Determine position by passing coordinates, zoom, and optionally Pitch/Bearing, "bounding box": Set 4 coordinates to frame the image, "auto": Determines position based on overlays or default center coordinates',
     autocomplete: ['center', 'auto', 'bounding box'],
   }),
 });
@@ -203,7 +203,7 @@ export const AttributionParam = new Param<coda.ParameterType.Boolean>({
     type: coda.ParameterType.Boolean,
     name: 'attribution',
     description:
-      'Controls whether there is attribution on the image. Defaults to true. Note: If attribution=false, the watermarked attribution is removed from the image. You still have a legal responsibility to attribute maps that use OpenStreetMap data, which includes most maps from Mapbox. If you specify attribution=false, you are legally required to include proper attribution elsewhere on the webpage or document.',
+      'If attribution=false, the watermarked attribution is removed from the image. If you specify attribution=false, you are legally required to include proper attribution elsewhere on the webpage or document.',
     optional: true,
     suggestedValue: true,
   }),
@@ -282,7 +282,7 @@ export const PaddingParam = new Param<coda.ParameterType.StringArray>({
     type: coda.ParameterType.StringArray,
     name: 'padding',
     description:
-      'Denotes the minimum padding per side of the image. This can only be used with auto or bbox. The value resembles the CSS specification for padding and accepts 1-4 integers without units. For example, padding=5 declares a minimum padding of 5 pixels for all sides, whereas padding=5,8,10,7 declares a minimum of 5 pixels of top padding, 8 pixels of right padding, 10 pixels of bottom padding, and 7 pixels of left padding. If auto is used but no value is specified in padding, the default padding will be used (a value that is 5% of the smallest side of the image, rounded up to the next integer value, up to a maximum of 12 pixels of padding per side).',
+      'Denotes the minimum padding per side of the image, can only be used with auto or bbox. Accepts 1-4 integers without units. For example with input of padding=5,8,10,7: top=5, right=8, bottom=10, and left=7 pixels.',
     optional: true,
   }),
 });
@@ -315,7 +315,7 @@ export const TitleParam = new Param<coda.ParameterType.String>({
     type: coda.ParameterType.String,
     name: 'title',
     description:
-      'Display a title box with the map\'s title, owner, and a default message along the bottom of the map. Possible values are copy (message reads "Copy this style to your account" and provides a Copy button) and view (message reads "Design your own maps with Mapbox Studio" and provides a Sign Up button). The copy option will only work if a style\'s visibility is set to public. If this parameter is not used or its value is set to false, a title box is not displayed.',
+      "Display a title box with the map's title, owner, and a default message. Possible values are copy (provides a Copy button) and view (provides a Sign Up button).",
     optional: true,
   }),
 });
@@ -369,7 +369,7 @@ export const RadiusParam = new Param<coda.ParameterType.Number>({
     type: coda.ParameterType.Number,
     name: 'radius',
     description:
-      'The approximate distance to query for features, in meters. Defaults to 0, which performs a point-in-polygon query. Has no upper bound. Required for queries against point and line data. Due to the nature of tile buffering, a query with a large radius made against equally large point or line data may not include all possible features in the results. Queries will use tiles from the maximum zoom of the tileset, and will only include the intersecting tile plus eight surrounding tiles when searching for nearby features.',
+      'The approximate distance to query for features, in meters. Defaults to 0, which performs a point-in-polygon query. Has no upper bound. Required for queries against point and line data.',
     optional: true,
     suggestedValue: 0,
   }),
@@ -392,7 +392,7 @@ export const DedupeParam = new Param<coda.ParameterType.Boolean>({
     type: coda.ParameterType.Boolean,
     name: 'dedupe',
     description:
-      'Determines whether the features in the result will be deduplicated (true, default) or not (false). The Tilequery API assumes that features are duplicates if all of the following are true: the features are from the same layer; the features are the same geometry type; and the features have the same ID and the same properties (or just the same properties, if the features do not have IDs).',
+      'Features are considered duplicates if all of the following are shared: layer; geometry type; ID and the same properties (or just the same properties, if the features do not have IDs).',
     suggestedValue: true,
     optional: true,
   }),

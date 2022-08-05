@@ -47,7 +47,7 @@ export const AlternativeRoutesParam = new Param<coda.ParameterType.Boolean>({
   codaDef: coda.makeParameter({
     name: 'alternatives',
     description:
-      'Whether to try to return alternative routes (true) or not (false, default). An alternative route is a route that is significantly different from the fastest route, but also still reasonably fast. Such a route does not exist in all circumstances. Up to two alternatives may be returned. This is available for mapbox/driving-traffic, mapbox/driving, mapbox/cycling and mapbox/walking.',
+      'Whether to try to return alternative routes (true) or not (false, default). An alternative route is a route that is significantly different from the fastest route, but also still reasonably fast. Up to two alternatives may be returned.',
     type: coda.ParameterType.Boolean,
     suggestedValue: false,
     optional: true,
@@ -80,7 +80,7 @@ export const ExcludeParam = function (profile: Param<any>) {
     codaDef: coda.makeParameter({
       name: 'exclude',
       description:
-        'Exclude certain road types and custom locations from routing, nothing is excluded by default. You can specify multiple values as a comma-separated list. The following exclude values are available and can be retrieved using GetOptions("directions_exclude") formula: motorway, toll, ferry, unpaved, cash_only_tolls',
+        'Exclude certain road types and features, nothing is excluded by default. Accepts a comma-separated list. Available options: motorway, toll, ferry, unpaved, cash_only_tolls',
       type: coda.ParameterType.StringArray,
       optional: true,
     }),
@@ -148,7 +148,7 @@ export const ContoursParam = new Param<coda.ParameterType.NumberArray>({
     optional: true,
     name: 'contours',
     description:
-      'List defining up to four contours either as 1) times in minutes or 2) distances in meters, to use for each isochrone contour. Contours must be in increasing order. The maximum time that can be specified is 60 minutes.The maximum distance that can be specified is 100000 meters (100km).',
+      'List defining up to four contours either as 1) times in minutes or 2) distances in meters, to use for each isochrone contour. Must be in increasing order. Max time is 60 minutes, maximum distance is 100000 meters (100km).',
   }),
 });
 
@@ -160,7 +160,7 @@ export const ContoursColorsParam = new Param<coda.ParameterType.StringArray>({
     name: 'contours_colors',
     optional: true,
     description:
-      'The colors to use for each isochrone contour, specified as hex values without a leading # (for example, ff0000 for red). If this parameter is used, there must be the same number of colors as there are entries in contours_minutes or contours_meters. If no colors are specified, the Isochrone API will assign a default rainbow color scheme to the output.',
+      'The colors to use for each isochrone contour. If this parameter is used, there must be the same number of colors as there are entries in contours_minutes or contours_meters. A rainbow color scheme is used by default.',
   }),
 });
 export const PolygonsParam = new Param<coda.ParameterType.Boolean>({
@@ -182,7 +182,7 @@ export const DenoiseParam = new Param<coda.ParameterType.Number>({
     type: coda.ParameterType.Number,
     name: 'denoise',
     description:
-      'A floating point value from 0.0 to 1.0 that can be used to remove smaller contours. The default is 1.0. A value of 1.0 will only return the largest contour for a given value. A value of 0.5 drops any contours that are less than half the area of the largest contour in the set of contours for that same value.',
+      'A floating point value from 0.0 to 1.0 that can be used to remove smaller contours. The default is 1.0, which will only return the largest contour for a given value.',
     optional: true,
     suggestedValue: 1,
   }),
@@ -196,6 +196,6 @@ export const GeneralizeParam = new Param<coda.ParameterType.Number>({
     name: 'generalize',
     optional: true,
     description:
-      'A positive floating point value, in meters, used as the tolerance for Douglas-Peucker generalization. There is no upper bound. If no value is specified in the request, the Isochrone API will choose the most optimized generalization to use for the request. Note that the generalization of contours can lead to self-intersections, as well as intersections of adjacent contours.',
+      'A positive floating point value, in meters, used as the tolerance for Douglas-Peucker generalization. There is no upper bound. Optimizes by default if left empty',
   }),
 });

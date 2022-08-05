@@ -9,21 +9,18 @@ import {liveTest, pack} from '../../pack';
 
 if (liveTest) {
   describe('Features', () => {
-    // let ctx: SyncExecutionContext;
-    // beforeEach(() => {
-    //   try {
-    //     ctx = newRealFetcherSyncExecutionContext(pack, '../../pack');
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // });
-    // ctx.sync.dynamicUrl = 'cl3gejjil19xa21oxpjfscr96';
+    let ctx: SyncExecutionContext = newRealFetcherSyncExecutionContext(
+      pack,
+      require.resolve('../../pack')
+    );
+
+    ctx.sync.dynamicUrl = 'cl3gejjil19xa21oxpjfscr96';
     it('sync table returns a valid schema', async () => {
       const result = await executeSyncFormulaFromPackDef(
         pack,
         'Features',
         [],
-        undefined,
+        ctx,
         undefined,
         {useRealFetcher: true, manifestPath: require.resolve('../../pack')}
       );
