@@ -49,7 +49,7 @@ export const featuresDynamicSyncTable = coda.makeDynamicSyncTable({
     description: '',
     parameters: [],
     execute: async (params, context) => {
-      let setId = context.sync.dynamicUrl; /
+      let setId = context.sync.dynamicUrl;
 
       const client = new MapBoxClient({
         context,
